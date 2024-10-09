@@ -1,15 +1,15 @@
-package mate.academy.bookstore.repository;
+package project.bookstore.repository;
 
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import mate.academy.bookstore.exception.DataProcessingException;
-import mate.academy.bookstore.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import project.bookstore.exception.DataProcessingException;
+import project.bookstore.model.Book;
 
 @Repository
 @RequiredArgsConstructor

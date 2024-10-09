@@ -1,8 +1,8 @@
-package mate.academy.bookstore.service;
+package project.bookstore.service;
 
 import java.util.List;
-import mate.academy.bookstore.dto.BookDto;
-import mate.academy.bookstore.dto.CreateBookRequestDto;
+import project.bookstore.dto.BookDto;
+import project.bookstore.dto.CreateBookRequestDto;
 
 public interface BookService {
     BookDto save(CreateBookRequestDto requestDto);
