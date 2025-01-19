@@ -13,7 +13,7 @@ import project.bookstore.repository.SpecificationProvider;
 public class IsbnSpecificationProvider implements SpecificationProvider<Book> {
     @Override
     public String getKey() {
-        return Book.SpecificationKey.ISBN.name();
+        return Book.SpecificationKey.ISBN.getValue();
     }
 
     @Override
@@ -23,7 +23,8 @@ public class IsbnSpecificationProvider implements SpecificationProvider<Book> {
             public Predicate toPredicate(Root<Book> root,
                                          CriteriaQuery<?> query,
                                          CriteriaBuilder criteriaBuilder) {
-                return criteriaBuilder.equal(root.get("isbn"), param);
+                return criteriaBuilder.equal(root.get(Book.SpecificationKey.ISBN.getValue()),
+                        param);
             }
         };
     }

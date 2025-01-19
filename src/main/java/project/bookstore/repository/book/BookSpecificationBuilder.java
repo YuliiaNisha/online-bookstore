@@ -20,16 +20,16 @@ public class BookSpecificationBuilder implements SpecificationBuilder<Book, Book
         }
         Specification<Book> specification = Specification.where(null);
         specification = getSpecificationForParameter(searchParameters.titlePart(),
-                Book.SpecificationKey.TITLE_PART.name(),
+                Book.SpecificationKey.TITLE_PART.getValue(),
                         specification);
         specification = getSpecificationForParameter(searchParameters.author(),
-                Book.SpecificationKey.AUTHOR.name(),
+                Book.SpecificationKey.AUTHOR.getValue(),
                         specification);
         specification = getSpecificationForParameter(searchParameters.isbn(),
-                Book.SpecificationKey.ISBN.name(),
+                Book.SpecificationKey.ISBN.getValue(),
                         specification);
         specification = getSpecificationForParameter(searchParameters.descriptionPart(),
-                Book.SpecificationKey.DESCRIPTION_PART.name(),
+                Book.SpecificationKey.DESCRIPTION_PART.getValue(),
                         specification);
         return specification;
     }

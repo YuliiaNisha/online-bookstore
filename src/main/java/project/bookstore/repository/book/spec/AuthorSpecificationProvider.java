@@ -13,7 +13,7 @@ import project.bookstore.repository.SpecificationProvider;
 public class AuthorSpecificationProvider implements SpecificationProvider<Book> {
     @Override
     public String getKey() {
-        return Book.SpecificationKey.AUTHOR.name();
+        return Book.SpecificationKey.AUTHOR.getValue();
     }
 
     @Override
@@ -24,7 +24,7 @@ public class AuthorSpecificationProvider implements SpecificationProvider<Book> 
                                          CriteriaQuery<?> query,
                                          CriteriaBuilder criteriaBuilder) {
                 return criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("author")),
+                        criteriaBuilder.lower(root.get(Book.SpecificationKey.AUTHOR.getValue())),
                         "%" + param.toLowerCase() + "%");
             }
         };

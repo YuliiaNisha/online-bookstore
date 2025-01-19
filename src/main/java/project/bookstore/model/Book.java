@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -40,10 +41,17 @@ public class Book {
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
+    @Getter
     public enum SpecificationKey {
-        AUTHOR,
-        TITLE_PART,
-        ISBN,
-        DESCRIPTION_PART
+        AUTHOR("author"),
+        TITLE_PART("title"),
+        ISBN("isbn"),
+        DESCRIPTION_PART("description");
+
+        private final String value;
+
+        SpecificationKey(String value) {
+            this.value = value;
+        }
     }
 }
