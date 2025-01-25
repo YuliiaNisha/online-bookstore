@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import project.bookstore.dto.BookDto;
+import project.bookstore.dto.BookSearchParameters;
 import project.bookstore.dto.CreateBookRequestDto;
 import project.bookstore.service.BookService;
 
@@ -48,4 +49,8 @@ public class BookController {
         return bookService.update(id, requestDto);
     }
 
+    @GetMapping("/search")
+    public List<BookDto> search(BookSearchParameters searchParameters) {
+        return bookService.search(searchParameters);
+    }
 }
