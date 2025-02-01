@@ -36,6 +36,24 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                     HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundException(
+                            EntityNotFoundException ex
+    ) {
+        return new ResponseEntity<>(
+                    getBody(HttpStatus.NOT_FOUND, List.of(ex.getMessage())),
+            HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SpecificationProviderNotFoundException.class)
+    protected ResponseEntity<Object> handleSpecificationProviderNotFoundException(
+                            SpecificationProviderNotFoundException ex
+    ) {
+        return new ResponseEntity<>(
+                    getBody(HttpStatus.INTERNAL_SERVER_ERROR, List.of(ex.getMessage())),
+            HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private String getErrorMessage(ObjectError error) {
         if (error instanceof FieldError fieldError) {
             String field = fieldError.getField();
@@ -52,23 +70,5 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("status", status);
         body.put("errors", message);
         return body;
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundException(
-                            EntityNotFoundException ex
-    ) {
-        return new ResponseEntity<>(
-                    getBody(HttpStatus.NOT_FOUND,List.of(ex.getMessage())),
-            HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(SpecificationProviderNotFoundException.class)
-    protected ResponseEntity<Object> handleSpecificationProviderNotFoundException(
-                            SpecificationProviderNotFoundException ex
-    ) {
-        return new ResponseEntity<>(
-                    getBody(HttpStatus.INTERNAL_SERVER_ERROR, List.of(ex.getMessage())),
-            HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

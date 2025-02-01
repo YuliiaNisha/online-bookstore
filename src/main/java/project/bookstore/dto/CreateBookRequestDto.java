@@ -19,10 +19,8 @@ public class CreateBookRequestDto {
     @NotNull(message = "Price is required. Please provide a price.")
     @Positive(message = "Price must be greater than 0")
     private BigDecimal price;
-    @NotBlank(message = "Description is required. Please provide a book description.")
     @Size(max = 1000, message = "Description must be less than 1000 characters")
     private String description;
-    @NotBlank(message = "Cover image URL is required. Please provide a valid URL.")
     @URL(message = "Invalid cover image URL. Please provide a valid URL.")
     private String coverImage;
 }
