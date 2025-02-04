@@ -30,19 +30,16 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                 .stream()
                                 .map(this::getErrorMessage)
                                 .toList();
-        return new ResponseEntity<>(
-                    getBody(HttpStatus.BAD_REQUEST,errors),
-                    headers,
-                    HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(getBody(errors), headers,
+                        HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundException(
                             EntityNotFoundException ex
     ) {
-        return new ResponseEntity<>(
-                    getBody(HttpStatus.NOT_FOUND, List.of(ex.getMessage())),
-            HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(getBody(List.of(ex.getMessage())),
+                            HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(SpecificationProviderNotFoundException.class)
@@ -50,8 +47,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                             SpecificationProviderNotFoundException ex
     ) {
         return new ResponseEntity<>(
-                    getBody(HttpStatus.INTERNAL_SERVER_ERROR, List.of(ex.getMessage())),
-            HttpStatus.INTERNAL_SERVER_ERROR);
+                    getBody(List.of(ex.getMessage())),
+                            HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     private String getErrorMessage(ObjectError error) {
@@ -61,11 +58,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return error.getDefaultMessage();
     }
 
-    private Map<String, Object> getBody(HttpStatus status, List<String> message
-    ) {
+    private Map<String, Object> getBody(List<String> message) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", status);
         body.put("errors", message);
         return body;
     }
