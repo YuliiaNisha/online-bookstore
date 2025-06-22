@@ -3,8 +3,8 @@ package project.bookstore.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import project.bookstore.config.MapperConfig;
-import project.bookstore.dto.BookDto;
-import project.bookstore.dto.CreateBookRequestDto;
+import project.bookstore.dto.book.BookDto;
+import project.bookstore.dto.book.CreateBookRequestDto;
 import project.bookstore.model.Book;
 
 @Mapper(config = MapperConfig.class)

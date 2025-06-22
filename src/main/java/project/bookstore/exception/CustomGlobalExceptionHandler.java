@@ -51,6 +51,27 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                             HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(FieldMatchValidationException.class)
+    protected ResponseEntity<Object> handleFieldMatchValidationException(
+            FieldMatchValidationException ex
+    ) {
+        return new ResponseEntity<>(
+                getBody(List.of(ex.getMessage())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    protected ResponseEntity<Object> handleRegistrationException(
+            RegistrationException ex
+    ) {
+        return new ResponseEntity<>(
+                getBody(List.of(ex.getMessage())),
+                HttpStatus.BAD_REQUEST
+
+        );
+    }
+
     private String getErrorMessage(ObjectError error) {
         if (error instanceof FieldError fieldError) {
             return fieldError.getField() + ": " + error.getDefaultMessage();

@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import project.bookstore.dto.BookDto;
-import project.bookstore.dto.BookSearchParameters;
-import project.bookstore.dto.CreateBookRequestDto;
-import project.bookstore.service.BookService;
+import project.bookstore.dto.book.BookDto;
+import project.bookstore.dto.book.BookSearchParameters;
+import project.bookstore.dto.book.CreateBookRequestDto;
+import project.bookstore.service.book.BookService;
 
 @Tag(name = "Bookstore API",
         description = "Endpoints for managing books")

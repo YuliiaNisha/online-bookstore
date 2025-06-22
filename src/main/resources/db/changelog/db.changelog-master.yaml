@@ -1,3 +1,12 @@
 databaseChangeLog:
   - include:
       file: classpath:/db/changelog/changes/01-create-books-table.yaml
+  - include:
+      file: classpath:/db/changelog/changes/02-create-users-table.yaml
+  - include:
+      file: classpath:/db/changelog/changes/03-add-column-to-users-table.yaml
+  - include:
+      file: classpath:/db/changelog/changes/04-add-column-salt-to-users-table.yaml
+  - include:
+      file: classpath:/db/changelog/changes/05-modify-column-type-in-users-table.yaml
+

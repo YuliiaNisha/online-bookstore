@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-to-users-table
+      author: julia
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: salt
+                  type: binary(16)
