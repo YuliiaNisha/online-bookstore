@@ -1,13 +1,10 @@
 package project.bookstore.validation;
 
-import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
-import project.bookstore.dto.user.UserRegistrationRequestDto;
 import project.bookstore.exception.FieldMatchValidationException;
 
-public class FieldMatchValidator
-        implements ConstraintValidator<FieldMatch, UserRegistrationRequestDto> {
+public class FieldMatchValidator extends AbstractFieldValidator<FieldMatch> {
     private String first;
     private String second;
     private String message;
@@ -21,25 +18,16 @@ public class FieldMatchValidator
 
     @Override
     public boolean isValid(
-            UserRegistrationRequestDto requestDto,
+            Object object,
             ConstraintValidatorContext context
     ) {
         try {
-            Field firstField = requestDto.getClass().getDeclaredField(first);
-            Field secondField = requestDto.getClass().getDeclaredField(second);
-            firstField.setAccessible(true);
-            secondField.setAccessible(true);
-            if (!firstField.getType().equals(secondField.getType())) {
-                throw new FieldMatchValidationException(
-                        "Field types do not match. First: "
-                        + firstField.getType().getName()
-                                + " second: " + secondField.getType().getName());
-            }
-            Object firstValue = firstField.get(requestDto);
-            Object secondValue = secondField.get(requestDto);
-            if (firstValue == null
-                    || secondValue == null
-                        || !firstValue.equals(secondValue)) {
+            Field firstField = getField(object, first);
+            Field secondField = getField(object, second);
+            isSameType(firstField, secondField);
+            Object firstValue = firstField.get(object);
+            Object secondValue = secondField.get(object);
+            if (!compare(firstValue, secondValue)) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(message)
                         .addPropertyNode(second)
@@ -47,8 +35,13 @@ public class FieldMatchValidator
                 return false;
             }
             return true;
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new FieldMatchValidationException("Can't validate fields: ", e);
         }
+    }
+
+    @Override
+    protected boolean compare(Object firstValue, Object secondValue) {
+        return firstValue != null && firstValue.equals(secondValue);
     }
 }
