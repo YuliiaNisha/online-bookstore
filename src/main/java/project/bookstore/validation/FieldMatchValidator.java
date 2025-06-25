@@ -1,10 +1,11 @@
 package project.bookstore.validation;
 
+import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 import project.bookstore.exception.FieldMatchValidationException;
 
-public class FieldMatchValidator extends AbstractFieldValidator<FieldMatch> {
+public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
     private String first;
     private String second;
     private String message;
@@ -27,7 +28,7 @@ public class FieldMatchValidator extends AbstractFieldValidator<FieldMatch> {
             isSameType(firstField, secondField);
             Object firstValue = firstField.get(object);
             Object secondValue = secondField.get(object);
-            if (!compare(firstValue, secondValue)) {
+            if (firstValue == null || !firstValue.equals(secondValue)) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(message)
                         .addPropertyNode(second)
@@ -40,8 +41,22 @@ public class FieldMatchValidator extends AbstractFieldValidator<FieldMatch> {
         }
     }
 
-    @Override
-    protected boolean compare(Object firstValue, Object secondValue) {
-        return firstValue != null && firstValue.equals(secondValue);
+    private Field getField(Object object, String fieldName) {
+        try {
+            Field field = object.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field;
+        } catch (NoSuchFieldException e) {
+            throw new FieldMatchValidationException("Can't get field: " + fieldName, e);
+        }
+    }
+
+    private void isSameType(Field firstField, Field secondField) {
+        if (!firstField.getType().equals(secondField.getType())) {
+            throw new FieldMatchValidationException(
+                    "Fields types do not match. First: "
+                            + firstField.getType().getName()
+                            + " second: " + secondField.getType().getName());
+        }
     }
 }

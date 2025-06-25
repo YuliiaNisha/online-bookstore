@@ -1,9 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: modify-column-type-in-users-table
-      author: julia
-      changes:
-        - modifyDataType:
-            tableName: users
-            columnName: salt
-            newDataType: varbinary(16)

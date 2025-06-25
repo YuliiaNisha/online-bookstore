@@ -67,7 +67,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         return new ResponseEntity<>(
                 getBody(List.of(ex.getMessage())),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.CONFLICT
 
         );
     }

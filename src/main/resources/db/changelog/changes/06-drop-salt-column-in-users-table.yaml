@@ -1,8 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: drop-salt-column-in-users-table
-      author: julia
-      changes:
-        - dropColumn:
-            tableName: users
-            columnName: salt
