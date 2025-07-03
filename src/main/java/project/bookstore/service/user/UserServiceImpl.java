@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

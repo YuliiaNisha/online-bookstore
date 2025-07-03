@@ -133,7 +133,10 @@ public class BookController {
             }
     )
     @GetMapping("/search")
-    public List<BookDto> search(@RequestBody BookSearchParameters searchParameters, Pageable pageable) {
+    public List<BookDto> search(
+            @RequestBody BookSearchParameters searchParameters,
+            Pageable pageable
+    ) {
         return bookService.search(searchParameters, pageable);
     }
 }
