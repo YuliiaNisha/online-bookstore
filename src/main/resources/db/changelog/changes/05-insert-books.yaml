@@ -1,0 +1,77 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books
+      author: julia
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Crime and Punishment
+              - column:
+                  name: author
+                  value: Fyodor Dostoevsky
+              - column:
+                  name: isbn
+                  value: 9780143058144
+              - column:
+                  name: price
+                  value: 15.25
+              - column:
+                  name: description
+                  value: A psychological drama exploring guilt and redemption through a student’s crime.
+              - column:
+                  name: cover_image
+                  value: /images/crime-punishment.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Hamlet
+              - column:
+                  name: author
+                  value: William Shakespeare
+              - column:
+                  name: isbn
+                  value: 9780743477123
+              - column:
+                  name: price
+                  value: 9.50
+              - column:
+                  name: description
+                  value: A prince's tragic quest for revenge in the royal court of Denmark.
+              - column:
+                  name: cover_image
+                  value: /images/hamlet.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: The Divine Comedy
+              - column:
+                  name: author
+                  value: Dante Alighieri
+              - column:
+                  name: isbn
+                  value: 9780142437223
+              - column:
+                  name: price
+                  value: 16.80
+              - column:
+                  name: description
+                  value: A poetic vision of the afterlife, from Hell to Paradise.
+              - column:
+                  name: cover_image
+                  value: /images/divine-comedy.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
