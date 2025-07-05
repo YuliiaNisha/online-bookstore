@@ -2,8 +2,6 @@ package project.bookstore.service.user;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
-import java.util.Collections;
-import java.util.HashSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,9 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @PostConstruct
     private void init() {
-        roleUser = roleRepository.findById(USER_ROLE_ID).orElseThrow(
-                () -> new EntityNotFoundException("Can't find role by id: "
-                        + USER_ROLE_ID)
+        roleUser = roleRepository.findByRole(Role.RoleName.ROLE_USER)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Can't find role by id: " + USER_ROLE_ID)
         );
     }
 
@@ -44,14 +42,9 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("Can't register user. User with email: "
             + requestDto.getEmail() + " is already registered.");
         }
-        User user = createUser(requestDto);
-        return userMapper.toDto(userRepository.save(user));
-    }
-
-    private User createUser(UserRegistrationRequestDto requestDto) {
         User user = userMapper.toModel(requestDto);
         user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        user.setRoles(new HashSet<>(Collections.singleton(roleUser)));
-        return user;
+        user.getRoles().add(roleUser);
+        return userMapper.toDto(userRepository.save(user));
     }
 }
