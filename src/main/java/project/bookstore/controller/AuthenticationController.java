@@ -1,4 +1,4 @@
-package project.bookstore.security;
+package project.bookstore.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

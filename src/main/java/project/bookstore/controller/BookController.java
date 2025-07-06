@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import project.bookstore.dto.book.BookDto;
 import project.bookstore.dto.book.BookSearchParameters;
 import project.bookstore.dto.book.CreateBookRequestDto;
+import project.bookstore.dto.book.UpdateBookRequestDto;
 import project.bookstore.service.book.BookService;
 
 @Tag(name = "Bookstore API",
@@ -38,6 +40,7 @@ public class BookController {
                     description = "Successfully created the book")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
         return bookService.save(requestDto);
@@ -83,6 +86,7 @@ public class BookController {
                     description = "Successfully deleted the book")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
@@ -96,9 +100,10 @@ public class BookController {
                     description = "Successfully updated the book")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public BookDto update(@PathVariable Long id,
-                          @RequestBody @Valid CreateBookRequestDto requestDto) {
+                          @RequestBody @Valid UpdateBookRequestDto requestDto) {
         return bookService.update(id, requestDto);
     }
 
@@ -128,7 +133,10 @@ public class BookController {
             }
     )
     @GetMapping("/search")
-    public List<BookDto> search(BookSearchParameters searchParameters, Pageable pageable) {
+    public List<BookDto> search(
+            @RequestBody BookSearchParameters searchParameters,
+            Pageable pageable
+    ) {
         return bookService.search(searchParameters, pageable);
     }
 }

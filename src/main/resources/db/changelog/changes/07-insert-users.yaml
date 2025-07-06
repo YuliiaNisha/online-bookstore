@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-users
+      author: julia
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: linda@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$khAQjwl/VaKRLrbydO0vO.C9CnuRV5JRoAxXMpOWGyKrUUZ.ime1u
+              - column:
+                  name: first_name
+                  value: Linda
+              - column:
+                  name: last_name
+                  value: Best
+              - column:
+                  name: shipping_address
+                  value: London, First street
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: john@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$L8hHCTU1LmQsB2jd2Czf8ueO2bI4HnSGbpnjl0v8.QFXlEdU0ouKG
+              - column:
+                  name: first_name
+                  value: John
+              - column:
+                  name: last_name
+                  value: Star
+              - column:
+                  name: shipping_address
+                  value: London, Second street
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: bob@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$M0zs/w/3kT4xkuk/3Jx9GuFbc13pq5W2n2HbnWnDsOH1/01Uv4RBK
+              - column:
+                  name: first_name
+                  value: Bob
+              - column:
+                  name: last_name
+                  value: Cool
+              - column:
+                  name: shipping_address
+                  value: London, Third street
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
