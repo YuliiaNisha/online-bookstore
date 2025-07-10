@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import project.bookstore.exception.JwtException;
+import project.bookstore.exception.JwtAuthenticationException;
 
 @Component
 public class JwtUtil {
@@ -35,8 +35,8 @@ public class JwtUtil {
         try {
             Jws<Claims> claims = getAllClaims(token);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("Expired or invalid JWT token. ", e);
+        } catch (JwtAuthenticationException | IllegalArgumentException e) {
+            throw new JwtAuthenticationException("Expired or invalid JWT token. ", e);
         }
     }
 
