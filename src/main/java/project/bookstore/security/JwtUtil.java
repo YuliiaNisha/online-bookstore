@@ -2,6 +2,7 @@ package project.bookstore.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +36,7 @@ public class JwtUtil {
         try {
             Jws<Claims> claims = getAllClaims(token);
             return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtAuthenticationException | IllegalArgumentException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("Expired or invalid JWT token. ", e);
         }
     }
