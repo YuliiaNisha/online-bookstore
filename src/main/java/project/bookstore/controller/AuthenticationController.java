@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import project.bookstore.dto.user.UserLoginRequestDto;
+import project.bookstore.dto.user.UserLoginResponseDto;
 import project.bookstore.dto.user.UserRegistrationRequestDto;
 import project.bookstore.dto.user.UserResponseDto;
 import project.bookstore.exception.RegistrationException;
+import project.bookstore.security.AuthenticationService;
 import project.bookstore.service.user.UserService;
 
 @Tag(name = "Authentication API",
@@ -22,6 +25,7 @@ import project.bookstore.service.user.UserService;
 @RequestMapping("/auth")
 public class AuthenticationController {
     private final UserService userService;
+    private final AuthenticationService authenticationService;
 
     @Operation(summary = "Register a new user",
             description = "Adds a new user to DB",
@@ -52,5 +56,27 @@ public class AuthenticationController {
             @RequestBody @Valid UserRegistrationRequestDto requestDto
     ) throws RegistrationException {
         return userService.register(requestDto);
+    }
+
+    @Operation(summary = "User login",
+            description = "Allows user to log in",
+            parameters = {
+                    @Parameter(name = "email",
+                            description = "User email"),
+                    @Parameter(name = "password",
+                            description = "User password")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            description = "User successfully logged in "),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid request"),
+                    @ApiResponse(responseCode = "401",
+                            description = "Invalid credentials")
+            }
+    )
+    @PostMapping("/login")
+    UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto requestDto) {
+        return authenticationService.authenticate(requestDto);
     }
 }
