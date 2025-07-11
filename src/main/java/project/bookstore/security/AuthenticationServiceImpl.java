@@ -21,7 +21,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         requestDto.email(), requestDto.password()
                 )
         );
-        String token = jwtUtil.generateToken(requestDto.email());
+        String token = jwtUtil.generateToken(authentication.getName());
         return new UserLoginResponseDto(token);
     }
 }
