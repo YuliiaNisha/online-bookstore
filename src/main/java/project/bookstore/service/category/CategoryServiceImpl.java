@@ -2,6 +2,7 @@ package project.bookstore.service.category;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.bookstore.dto.category.CategoryDto;
@@ -25,11 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findAll(Pageable pageable) {
+    public Page<CategoryDto> findAll(Pageable pageable) {
         return categoryRepository.findAll(pageable)
-                .stream()
-                .map(categoryMapper::toDto)
-                .toList();
+                .map(categoryMapper::toDto);
     }
 
     @Override

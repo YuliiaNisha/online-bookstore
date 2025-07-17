@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,12 +39,13 @@ public class CategoryController {
     @Operation(summary = "Create a new category",
             description = "Adds a new category to DB",
             responses = {
-                    @ApiResponse(responseCode = "200",
+                    @ApiResponse(responseCode = "201",
                             description = "Successfully created the category"),
                     @ApiResponse(responseCode = "400",
                             description = "Invalid input")
             }
     )
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public CategoryDto createCategory(@RequestBody @Valid CreateCategoryRequestDto requestDto) {
@@ -67,7 +69,7 @@ public class CategoryController {
             }
     )
     @GetMapping
-    public List<CategoryDto> getAll(Pageable pageable) {
+    public Page<CategoryDto> getAll(Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 
@@ -140,7 +142,7 @@ public class CategoryController {
             }
     )
     @GetMapping("/{id}/books")
-    public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(
+    public Page<BookDtoWithoutCategoryIds> getBooksByCategoryId(
             @PathVariable Long id,
             Pageable pageable
     ) {

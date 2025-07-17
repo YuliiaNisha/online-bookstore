@@ -1,6 +1,5 @@
 package project.bookstore.repository;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +22,5 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     Page<Book> findAll(Specification<Book> bookSpecification, Pageable pageable);
 
     @EntityGraph(attributePaths = "categories")
-    List<Book> findAllByCategories_id(Long categoryId, Pageable pageable);
+    Page<Book> findAllByCategories_id(Long categoryId, Pageable pageable);
 }

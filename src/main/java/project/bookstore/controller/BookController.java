@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -36,12 +37,13 @@ public class BookController {
     @Operation(summary = "Create a new book",
             description = "Adds a new book to DB",
             responses = {
-                    @ApiResponse(responseCode = "200",
+                    @ApiResponse(responseCode = "201",
                             description = "Successfully created the book"),
                     @ApiResponse(responseCode = "400",
                             description = "Invalid input")
             }
     )
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto requestDto) {
@@ -81,7 +83,7 @@ public class BookController {
             }
     )
     @GetMapping
-    public List<BookDto> getAll(Pageable pageable) {
+    public Page<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
@@ -147,7 +149,7 @@ public class BookController {
             }
     )
     @GetMapping("/search")
-    public List<BookDto> search(
+    public Page<BookDto> search(
             @RequestBody BookSearchParameters searchParameters,
             Pageable pageable
     ) {
