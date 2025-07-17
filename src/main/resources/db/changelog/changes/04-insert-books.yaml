@@ -1,0 +1,204 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books
+      author: julia
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Crime and Punishment
+              - column:
+                  name: author
+                  value: Fyodor Dostoevsky
+              - column:
+                  name: isbn
+                  value: 9780143058144
+              - column:
+                  name: price
+                  value: 15.25
+              - column:
+                  name: description
+                  value: A psychological drama exploring guilt and redemption through a student’s crime.
+              - column:
+                  name: cover_image
+                  value: /images/crime-punishment.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Hamlet
+              - column:
+                  name: author
+                  value: William Shakespeare
+              - column:
+                  name: isbn
+                  value: 9780743477123
+              - column:
+                  name: price
+                  value: 9.50
+              - column:
+                  name: description
+                  value: A prince's tragic quest for revenge in the royal court of Denmark.
+              - column:
+                  name: cover_image
+                  value: /images/hamlet.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: The Divine Comedy
+              - column:
+                  name: author
+                  value: Dante Alighieri
+              - column:
+                  name: isbn
+                  value: 9780142437223
+              - column:
+                  name: price
+                  value: 16.80
+              - column:
+                  name: description
+                  value: A poetic vision of the afterlife, from Hell to Paradise.
+              - column:
+                  name: cover_image
+                  value: /images/divine-comedy.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "Sapiens: A Brief History of Humankind"
+              - column:
+                  name: author
+                  value: Yuval Noah Harari
+              - column:
+                  name: isbn
+                  value: 9780062316097
+              - column:
+                  name: price
+                  value: 18.00
+              - column:
+                  name: description
+                  value: A compelling exploration of the history and evolution of humans.
+              - column:
+                  name: cover_image
+                  value: /images/sapiens.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Harry Potter and the Sorcerer's Stone
+              - column:
+                  name: author
+                  value: J.K. Rowling
+              - column:
+                  name: isbn
+                  value: 9780590353427
+              - column:
+                  name: price
+                  value: 12.99
+              - column:
+                  name: description
+                  value: A young wizard discovers his destiny in a magical world full of danger and wonder.
+              - column:
+                  name: cover_image
+                  value: /images/harry-potter1.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: The Diary of a Young Girl
+              - column:
+                  name: author
+                  value: Anne Frank
+              - column:
+                  name: isbn
+                  value: 9780553296983
+              - column:
+                  name: price
+                  value: 8.99
+              - column:
+                  name: description
+                  value: The poignant writings of a Jewish girl hiding during the Nazi occupation.
+              - column:
+                  name: cover_image
+                  value: /images/anne-frank.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Meditations
+              - column:
+                  name: author
+                  value: Marcus Aurelius
+              - column:
+                  name: isbn
+                  value: 9780140449334
+              - column:
+                  name: price
+                  value: 10.50
+              - column:
+                  name: description
+                  value: Stoic reflections on life, virtue, and inner peace by a Roman emperor.
+              - column:
+                  name: cover_image
+                  value: /images/meditations.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: Salt, Fat, Acid, Heat
+              - column:
+                  name: author
+                  value: Samin Nosrat
+              - column:
+                  name: isbn
+                  value: 9781476753836
+              - column:
+                  name: price
+                  value: 23.40
+              - column:
+                  name: description
+                  value: A masterclass in essential cooking elements, blending science and tradition.
+              - column:
+                  name: cover_image
+                  value: /images/salt-fat-acid-heat.jpg
+              - column:
+                  name: is_deleted
+                  valueBoolean: false

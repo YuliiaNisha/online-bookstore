@@ -37,7 +37,9 @@ public class BookController {
             description = "Adds a new book to DB",
             responses = {
                     @ApiResponse(responseCode = "200",
-                    description = "Successfully created the book")
+                            description = "Successfully created the book"),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid input")
             }
     )
     @PreAuthorize("hasRole('ADMIN')")
@@ -50,7 +52,11 @@ public class BookController {
             description = "Provides a book by its id",
             responses = {
                     @ApiResponse(responseCode = "200",
-                    description = "Successfully found book by id")
+                            description = "Successfully found book by id"),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid ID supplied"),
+                    @ApiResponse(responseCode = "404",
+                            description = "Book not found")
             }
     )
     @GetMapping("/{id}")
@@ -65,13 +71,13 @@ public class BookController {
                     @Parameter(name = "Page",
                             description = "Number of a page to provide"),
                     @Parameter(name = "Size",
-                            description = "Number of book per page"),
+                            description = "Number of books per page"),
                     @Parameter(name = "Sort",
                             description = "Sorting criteria for the output")
             },
             responses = {
                     @ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved all books")
+                            description = "Successfully retrieved all books")
             }
     )
     @GetMapping
@@ -82,8 +88,12 @@ public class BookController {
     @Operation(summary = "Delete a book",
             description = "Marks a book in DB as deleted",
             responses = {
-                    @ApiResponse(responseCode = "200",
-                    description = "Successfully deleted the book")
+                    @ApiResponse(responseCode = "204",
+                            description = "Successfully deleted the book"),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid ID supplied"),
+                    @ApiResponse(responseCode = "404",
+                            description = "Book not found")
             }
     )
     @PreAuthorize("hasRole('ADMIN')")
@@ -97,7 +107,11 @@ public class BookController {
             description = "Updates info about a book",
             responses = {
                     @ApiResponse(responseCode = "200",
-                    description = "Successfully updated the book")
+                            description = "Successfully updated the book"),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid ID supplied"),
+                    @ApiResponse(responseCode = "404",
+                            description = "Book not found")
             }
     )
     @PreAuthorize("hasRole('ADMIN')")
@@ -129,7 +143,7 @@ public class BookController {
             },
             responses = {
                     @ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved books")
+                            description = "Successfully retrieved books")
             }
     )
     @GetMapping("/search")
