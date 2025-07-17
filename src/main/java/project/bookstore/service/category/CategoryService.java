@@ -1,6 +1,5 @@
 package project.bookstore.service.category;
 
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.bookstore.dto.category.CategoryDto;
