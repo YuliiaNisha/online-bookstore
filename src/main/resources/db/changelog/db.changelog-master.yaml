@@ -1,17 +1,25 @@
 databaseChangeLog:
   - include:
-      file: classpath:/db/changelog/changes/01-create-books-table.yaml
+      file: classpath:/db/changelog/changes/01-create-categories-table.yaml
   - include:
-      file: classpath:/db/changelog/changes/02-create-roles-table.yaml
+      file: classpath:/db/changelog/changes/02-insert-categories.yaml
   - include:
-      file: classpath:/db/changelog/changes/03-create-users-table.yaml
+      file: classpath:/db/changelog/changes/03-create-books-table.yaml
   - include:
-      file: classpath:/db/changelog/changes/04-create-users-roles-table.yaml
+      file: classpath:/db/changelog/changes/04-insert-books.yaml
   - include:
-      file: classpath:/db/changelog/changes/05-insert-books.yaml
+      file: classpath:/db/changelog/changes/05-create-books-categories-table.yaml
   - include:
-      file: classpath:/db/changelog/changes/06-insert-roles.yaml
+      file: classpath:/db/changelog/changes/06-insert-into-books-categories-table.yaml
   - include:
-      file: classpath:/db/changelog/changes/07-insert-users.yaml
+      file: classpath:/db/changelog/changes/07-create-roles-table.yaml
   - include:
-      file: classpath:/db/changelog/changes/08-insert-into-users-roles-table.yaml
+      file: classpath:/db/changelog/changes/08-insert-roles.yaml
+  - include:
+      file: classpath:/db/changelog/changes/09-create-users-table.yaml
+  - include:
+      file: classpath:/db/changelog/changes/10-insert-users.yaml
+  - include:
+      file: classpath:/db/changelog/changes/11-create-users-roles-table.yaml
+  - include:
+      file: classpath:/db/changelog/changes/12-insert-into-users-roles-table.yaml

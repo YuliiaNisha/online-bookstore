@@ -1,0 +1,114 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-into-books-categories-table
+      author: julia
+      changes:
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'Crime and Punishment')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Fiction')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'Hamlet')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Fiction')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'Hamlet')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Poetry')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'The Divine Comedy')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Poetry')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: "(SELECT id FROM books WHERE title = 'Sapiens: A Brief History of Humankind')"
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Non-Fiction')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: "(SELECT id FROM books WHERE title = 'Sapiens: A Brief History of Humankind')"
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'History')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: "(SELECT id FROM books WHERE title = 'Harry Potter and the Sorcerer''s Stone')"
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Fantasy')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'The Diary of a Young Girl')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Biography')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'The Diary of a Young Girl')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'History')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'Meditations')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Philosophy')
+
+        - insert:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  valueComputed: (SELECT id FROM books WHERE title = 'Salt, Fat, Acid, Heat')
+              - column:
+                  name: category_id
+                  valueComputed: (SELECT id FROM categories WHERE name = 'Cooking')
