@@ -38,12 +38,12 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto register(
             UserRegistrationRequestDto requestDto
     ) throws RegistrationException {
-        if (userRepository.existsByEmail(requestDto.getEmail())) {
+        if (userRepository.existsByEmail(requestDto.email())) {
             throw new RegistrationException("Can't register user. User with email: "
-            + requestDto.getEmail() + " is already registered.");
+            + requestDto.email() + " is already registered.");
         }
         User user = userMapper.toModel(requestDto);
-        user.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(requestDto.password()));
         user.getRoles().add(roleUser);
         return userMapper.toDto(userRepository.save(user));
     }

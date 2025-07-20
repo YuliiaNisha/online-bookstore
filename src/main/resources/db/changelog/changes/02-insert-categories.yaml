@@ -1,0 +1,108 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-categories
+      author: julia
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Fiction
+              - column:
+                  name: description
+                  value: Imaginative storytelling including novels, short stories, and fantasy
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Non-Fiction
+              - column:
+                  name: description
+                  value: Informative works based on facts, events, and real people
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Fantasy
+              - column:
+                  name: description
+                  value: Magical worlds, mythical creatures, and heroic quests
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Biography
+              - column:
+                  name: description
+                  value: Life stories of real individuals, from historical figures to modern icons
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: History
+              - column:
+                  name: description
+                  value: Books exploring historical events, periods, or cultures
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Poetry
+              - column:
+                  name: description
+                  value: Collections of verse exploring emotion, rhythm, and imagery
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Philosophy
+              - column:
+                  name: description
+                  value: Explorations of life, ethics, logic, and human thought
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  value: Cooking
+              - column:
+                  name: description
+                  value: Recipes, techniques, and culinary tips from various cuisines
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
