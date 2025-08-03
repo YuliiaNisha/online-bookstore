@@ -71,6 +71,26 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
+    @ExceptionHandler(EmptyCartException.class)
+    protected ResponseEntity<Object> handleEmptyCartException(
+            EmptyCartException ex
+    ) {
+        return new ResponseEntity<>(
+                getBody(List.of(ex.getMessage())),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(EnumFieldValidatorException.class)
+    protected ResponseEntity<Object> handleEnumFieldValidatorException(
+            EnumFieldValidatorException ex
+    ) {
+        return new ResponseEntity<>(
+                getBody(List.of(ex.getMessage())),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
     private String getErrorMessage(ObjectError error) {
         if (error instanceof FieldError fieldError) {
             return fieldError.getField() + ": " + error.getDefaultMessage();
