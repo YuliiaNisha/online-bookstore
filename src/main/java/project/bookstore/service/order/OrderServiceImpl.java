@@ -21,13 +21,12 @@ import project.bookstore.model.Order;
 import project.bookstore.model.OrderItem;
 import project.bookstore.model.ShoppingCart;
 import project.bookstore.model.User;
-import project.bookstore.repository.OrderItemRepository;
 import project.bookstore.repository.OrderRepository;
 import project.bookstore.repository.ShoppingCartRepository;
 
 @RequiredArgsConstructor
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
@@ -40,7 +39,9 @@ public class OrderServiceImpl implements OrderService{
         checkShoppingCartIsEmpty(userShoppingCart);
 
         Order newOrder = createNewOrder(requestDto, user);
-        Set<OrderItem> orderItems = mapOrderItemsFromCartItems(userShoppingCart.getCartItems(), newOrder);
+        Set<OrderItem> orderItems = mapOrderItemsFromCartItems(
+                userShoppingCart.getCartItems(), newOrder
+        );
         newOrder.setOrderItems(orderItems);
         BigDecimal orderTotal = calculateOrderTotal(newOrder.getOrderItems());
         newOrder.setTotal(orderTotal);

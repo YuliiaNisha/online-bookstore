@@ -22,7 +22,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "orderItems",
             "orderItems.book"
     })
-    Optional<Order> findByIdAndUserId(Long Id, Long userId);
+    Optional<Order> findByIdAndUserId(Long id, Long userId);
 
-    boolean existsByIdAndUserId(Long Id, Long userId);
+    boolean existsByIdAndUserId(Long id, Long userId);
 }

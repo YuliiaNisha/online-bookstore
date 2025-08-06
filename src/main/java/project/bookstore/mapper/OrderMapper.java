@@ -10,6 +10,9 @@ import project.bookstore.model.Order;
 public interface OrderMapper {
     @Mapping(source = "user.firstName", target = "firstName")
     @Mapping(source = "user.lastName", target = "lastName")
-    @Mapping(source = "orderItems", target = "orderItemDtos", qualifiedByName = "getOrderItemDtosSet")
+    @Mapping(
+            source = "orderItems",
+            target = "orderItemDtos",
+            qualifiedByName = "getOrderItemDtosSet")
     OrderDto toDto(Order order);
 }

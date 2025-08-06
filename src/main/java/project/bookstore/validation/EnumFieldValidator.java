@@ -73,7 +73,7 @@ public class EnumFieldValidator implements ConstraintValidator<ValidEnumFieldVal
         if (!field.getType().equals(String.class)) {
             throw new EnumFieldValidatorException(
                     "Can't validate field: " + fieldToValidate + ". "
-            + "Expected field type: " + String.class.getSimpleName() +", "
+            + "Expected field type: " + String.class.getSimpleName() + ", "
             + "but found: " + field.getType().getSimpleName());
         }
     }

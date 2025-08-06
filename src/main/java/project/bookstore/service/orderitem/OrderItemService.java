@@ -1,8 +1,6 @@
 package project.bookstore.service.orderitem;
 
 import java.util.Set;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import project.bookstore.dto.order.OrderItemDto;
 
 public interface OrderItemService {
