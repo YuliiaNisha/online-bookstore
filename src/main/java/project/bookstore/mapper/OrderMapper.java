@@ -8,8 +8,7 @@ import project.bookstore.model.Order;
 
 @Mapper(config = MapperConfig.class, uses = OrderItemDtosSetProvider.class)
 public interface OrderMapper {
-    @Mapping(source = "user.firstName", target = "firstName")
-    @Mapping(source = "user.lastName", target = "lastName")
+    @Mapping(source = "user.id", target = "userId")
     @Mapping(
             source = "orderItems",
             target = "orderItemDtos",

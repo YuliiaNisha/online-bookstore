@@ -9,13 +9,10 @@ import project.bookstore.model.OrderItem;
 
 @Mapper(config = MapperConfig.class)
 public interface OrderItemMapper {
-    @Mapping(source = "order.id", target = "orderId")
-    @Mapping(source = "book.title", target = "bookTitle")
-    @Mapping(source = "book.author", target = "bookAuthor")
+    @Mapping(source = "book.id", target = "bookId")
     OrderItemDto toDto(OrderItem orderItem);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "order", ignore = true)
-    @Mapping(target = "price", source = "book.price")
+    @Mapping(source = "book.price", target = "price")
     OrderItem fromCartItemToOrderItem(CartItem cartItem);
 }

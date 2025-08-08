@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import project.bookstore.dto.order.CreateOrderRequestDto;
 import project.bookstore.dto.order.OrderDto;
 import project.bookstore.dto.order.UpdateOrderStatusRequestDto;
-import project.bookstore.exception.EmptyCartException;
 import project.bookstore.exception.EntityNotFoundException;
+import project.bookstore.exception.OrderProcessingException;
 import project.bookstore.mapper.OrderItemMapper;
 import project.bookstore.mapper.OrderMapper;
 import project.bookstore.model.CartItem;
@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
 
     private void checkShoppingCartIsEmpty(ShoppingCart userShoppingCart) {
         if (userShoppingCart.getCartItems().isEmpty()) {
-            throw new EmptyCartException(
+            throw new OrderProcessingException(
                     "Can't create order. Shopping cart with id: "
                             + userShoppingCart.getId() + " "
                             + "is empty.");

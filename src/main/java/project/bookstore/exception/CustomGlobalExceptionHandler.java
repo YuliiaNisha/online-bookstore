@@ -71,9 +71,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         );
     }
 
-    @ExceptionHandler(EmptyCartException.class)
+    @ExceptionHandler(OrderProcessingException.class)
     protected ResponseEntity<Object> handleEmptyCartException(
-            EmptyCartException ex
+            OrderProcessingException ex
     ) {
         return new ResponseEntity<>(
                 getBody(List.of(ex.getMessage())),

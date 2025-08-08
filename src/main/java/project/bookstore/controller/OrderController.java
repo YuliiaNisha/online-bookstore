@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import project.bookstore.dto.order.CreateOrderRequestDto;
 import project.bookstore.dto.order.OrderDto;
+import project.bookstore.dto.order.OrderItemDto;
 import project.bookstore.dto.order.UpdateOrderStatusRequestDto;
 import project.bookstore.model.User;
 import project.bookstore.service.order.OrderService;
+import project.bookstore.service.orderitem.OrderItemService;
 
 @Tag(name = "Orders",
         description = "Endpoints for managing orders")
@@ -32,6 +35,7 @@ import project.bookstore.service.order.OrderService;
 @RestController
 public class OrderController {
     private final OrderService orderService;
+    private final OrderItemService orderItemService;
 
     @Operation(summary = "Create a new order",
             description = "Adds a new order to DB",
@@ -45,7 +49,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public OrderDto createOrder(
-            @RequestBody CreateOrderRequestDto requestDto,
+            @RequestBody @Valid CreateOrderRequestDto requestDto,
             @AuthenticationPrincipal User user) {
         return orderService.createOrder(requestDto, user);
     }
@@ -92,5 +96,44 @@ public class OrderController {
             @RequestBody @Valid UpdateOrderStatusRequestDto requestDto
     ) {
         return orderService.updateStatus(id, requestDto);
+    }
+
+    @Operation(summary = "Get order items by order id",
+            description = "Provides order items by corresponding order id",
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Successfully found order items"),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid ID supplied"),
+                    @ApiResponse(responseCode = "404",
+                            description = "Order not found")
+            }
+    )
+    @GetMapping("/{orderId}/items")
+    public Set<OrderItemDto> getOrderItemsByOrderId(
+            @PathVariable Long orderId,
+            @AuthenticationPrincipal User user
+    ) {
+        return orderItemService.findOrderItemsByOrderId(orderId, user.getId());
+    }
+
+    @Operation(summary = "Get order item id",
+            description = "Provides order item by its id",
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Successfully found order item"),
+                    @ApiResponse(responseCode = "400",
+                            description = "Invalid ID supplied"),
+                    @ApiResponse(responseCode = "404",
+                            description = "Order item not found")
+            }
+    )
+    @GetMapping("/{orderId}/items/{id}")
+    public OrderItemDto getOrderItemById(
+            @PathVariable Long orderId,
+            @PathVariable Long id,
+            @AuthenticationPrincipal User user
+    ) {
+        return orderItemService.findOrderItemById(orderId, id, user.getId());
     }
 }

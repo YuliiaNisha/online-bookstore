@@ -6,12 +6,10 @@ import java.util.Set;
 
 public record OrderDto(
         Long id,
-        String firstName,
-        String lastName,
+        Long userId,
         String status,
         BigDecimal total,
         LocalDateTime orderDate,
-        String shippingAddress,
         Set<OrderItemDto> orderItemDtos
 ) {
 }
