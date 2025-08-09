@@ -55,11 +55,11 @@ public class CategoryController {
             description = "Provides a set of all categories"
                     + "Supports pagination and sorting",
             parameters = {
-                    @Parameter(name = "Page",
+                    @Parameter(name = "page",
                             description = "Number of a page to provide"),
-                    @Parameter(name = "Size",
+                    @Parameter(name = "size",
                             description = "Number of categories per page"),
-                    @Parameter(name = "Sort",
+                    @Parameter(name = "sort",
                             description = "Sorting criteria for the output")
             },
             responses = {
@@ -128,11 +128,11 @@ public class CategoryController {
             description = "Provides a list of books "
                     + "that belong to the particular category",
             parameters = {
-                    @Parameter(name = "Page",
+                    @Parameter(name = "page",
                             description = "Number of a page to provide"),
-                    @Parameter(name = "Size",
+                    @Parameter(name = "size",
                             description = "Number of books per page"),
-                    @Parameter(name = "Sort",
+                    @Parameter(name = "sort",
                             description = "Sorting criteria for the output")
             },
             responses = {

@@ -14,7 +14,8 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long
     @EntityGraph(attributePaths = {
             "user",
             "cartItems",
-            "cartItems.book"
+            "cartItems.book",
+            "cartItems.book.categories",
     })
     Optional<ShoppingCart> findByUserId(Long userId);
 }

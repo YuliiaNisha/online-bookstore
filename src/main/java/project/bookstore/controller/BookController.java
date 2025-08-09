@@ -69,11 +69,11 @@ public class BookController {
             description = "Provides a list of all books. "
                     + "Supports pagination and sorting",
             parameters = {
-                    @Parameter(name = "Page",
+                    @Parameter(name = "page",
                             description = "Number of a page to provide"),
-                    @Parameter(name = "Size",
+                    @Parameter(name = "size",
                             description = "Number of books per page"),
-                    @Parameter(name = "Sort",
+                    @Parameter(name = "sort",
                             description = "Sorting criteria for the output")
             },
             responses = {
@@ -135,11 +135,11 @@ public class BookController {
                             description = "Isbn to search for"),
                     @Parameter(name = "Description Part",
                             description = "Description or its part to search for"),
-                    @Parameter(name = "Page",
+                    @Parameter(name = "page",
                             description = "Number of a page to provide"),
-                    @Parameter(name = "Size",
+                    @Parameter(name = "size",
                             description = "Number of book per page"),
-                    @Parameter(name = "Sort",
+                    @Parameter(name = "sort",
                             description = "Sorting criteria for the output")
             },
             responses = {

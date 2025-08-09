@@ -1,5 +1,6 @@
 package project.bookstore.service.shoppingcart;
 
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -38,15 +39,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartMapper.toDto(findCart(userId));
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto addBookToCart(AddBookToCartRequestDto requestDto, Long userId) {
         ShoppingCart shoppingCart = findCart(userId);
         Book bookToAdd = getBook(requestDto.bookId());
-        Optional<CartItem> bookToAddCartItem = findCartItemByPredicate(
+        Optional<CartItem> bookToAddInCart = findCartItemByPredicate(
                 shoppingCart, item -> item.getBook().equals(bookToAdd)
         );
-        if (bookToAddCartItem.isPresent()) {
-            CartItem cartItemToUpdate = bookToAddCartItem.get();
+        if (bookToAddInCart.isPresent()) {
+            CartItem cartItemToUpdate = bookToAddInCart.get();
             cartItemToUpdate.setQuantity(cartItemToUpdate.getQuantity() + requestDto.quantity());
         } else {
             CartItem newCartItem = createNewCartItem(
@@ -58,6 +60,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCartMapper.toDto(savedCart);
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto updateBookQuantity(
             UpdateBookQuantityRequestDto requestDto,
@@ -73,11 +76,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 )
         );
         cartItemToUpdate.setQuantity(requestDto.quantity());
-        return shoppingCartMapper.toDto(
-                shoppingCartRepository.save(shoppingCart)
-        );
+        return shoppingCartMapper.toDto(shoppingCart);
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto deleteBookFromCart(Long userId, Long cartItemId) {
         ShoppingCart shoppingCart = findCart(userId);
@@ -87,9 +89,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             throw new EntityNotFoundException("Can't find cart item by id: "
             + cartItemId + " in cart.");
         }
-        return shoppingCartMapper.toDto(
-                shoppingCartRepository.save(shoppingCart)
-        );
+        return shoppingCartMapper.toDto(shoppingCart);
     }
 
     private ShoppingCart findCart(Long userId) {

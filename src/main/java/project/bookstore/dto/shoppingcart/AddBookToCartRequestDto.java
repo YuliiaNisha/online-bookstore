@@ -8,6 +8,6 @@ public record AddBookToCartRequestDto(
         Long bookId,
         @NotNull(message = "Book quantity must be provided")
         @Min(value = 0, message = "Quantity value must be zero or a positive number")
-        Integer quantity
+        int quantity
 ) {
 }
