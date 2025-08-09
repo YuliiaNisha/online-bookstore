@@ -26,7 +26,6 @@ import project.bookstore.dto.order.OrderItemDto;
 import project.bookstore.dto.order.UpdateOrderStatusRequestDto;
 import project.bookstore.model.User;
 import project.bookstore.service.order.OrderService;
-import project.bookstore.service.orderitem.OrderItemService;
 
 @Tag(name = "Orders",
         description = "Endpoints for managing orders")
@@ -35,7 +34,6 @@ import project.bookstore.service.orderitem.OrderItemService;
 @RestController
 public class OrderController {
     private final OrderService orderService;
-    private final OrderItemService orderItemService;
 
     @Operation(summary = "Create a new order",
             description = "Adds a new order to DB",
@@ -114,7 +112,7 @@ public class OrderController {
             @PathVariable Long orderId,
             @AuthenticationPrincipal User user
     ) {
-        return orderItemService.findOrderItemsByOrderId(orderId, user.getId());
+        return orderService.findOrderItemsByOrderId(orderId, user.getId());
     }
 
     @Operation(summary = "Get order item id",
@@ -134,6 +132,6 @@ public class OrderController {
             @PathVariable Long id,
             @AuthenticationPrincipal User user
     ) {
-        return orderItemService.findOrderItemById(orderId, id, user.getId());
+        return orderService.findOrderItemById(orderId, id, user.getId());
     }
 }

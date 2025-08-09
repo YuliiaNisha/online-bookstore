@@ -10,18 +10,10 @@ import project.bookstore.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @EntityGraph(attributePaths = {
-            "user",
-            "orderItems",
-            "orderItems.order",
-            "orderItems.book"
-    })
+    @EntityGraph(attributePaths = "orderItems")
     Page<Order> findAllByUserId(Long userId, Pageable pageable);
 
-    @EntityGraph(attributePaths = {
-            "orderItems",
-            "orderItems.book"
-    })
+    @EntityGraph(attributePaths = "orderItems")
     Optional<Order> findByIdAndUserId(Long id, Long userId);
 
     boolean existsByIdAndUserId(Long id, Long userId);

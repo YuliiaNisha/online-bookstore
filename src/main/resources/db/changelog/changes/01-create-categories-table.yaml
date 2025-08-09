@@ -26,3 +26,8 @@ databaseChangeLog:
                   type: bit
                   constraints:
                     nullable: false
+
+        - addUniqueConstraint:
+            tableName: categories
+            columnNames: name
+            constraintName: uq_categories

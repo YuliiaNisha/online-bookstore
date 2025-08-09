@@ -5,12 +5,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import project.bookstore.dto.order.CreateOrderRequestDto;
 import project.bookstore.dto.order.OrderDto;
+import project.bookstore.dto.order.OrderItemDto;
 import project.bookstore.dto.order.UpdateOrderStatusRequestDto;
 import project.bookstore.exception.EntityNotFoundException;
 import project.bookstore.exception.OrderProcessingException;
@@ -21,6 +23,7 @@ import project.bookstore.model.Order;
 import project.bookstore.model.OrderItem;
 import project.bookstore.model.ShoppingCart;
 import project.bookstore.model.User;
+import project.bookstore.repository.OrderItemRepository;
 import project.bookstore.repository.OrderRepository;
 import project.bookstore.repository.ShoppingCartRepository;
 
@@ -29,8 +32,9 @@ import project.bookstore.repository.ShoppingCartRepository;
 public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
+    private final OrderItemRepository orderItemRepository;
     private final OrderItemMapper orderItemMapper;
+    private final OrderMapper orderMapper;
 
     @Transactional
     @Override
@@ -45,12 +49,12 @@ public class OrderServiceImpl implements OrderService {
         newOrder.setOrderItems(orderItems);
         BigDecimal orderTotal = calculateOrderTotal(newOrder.getOrderItems());
         newOrder.setTotal(orderTotal);
-        Order savedOrder = orderRepository.save(newOrder);
+        orderRepository.save(newOrder);
 
         userShoppingCart.getCartItems().clear();
         shoppingCartRepository.save(userShoppingCart);
 
-        return orderMapper.toDto(savedOrder);
+        return orderMapper.toDto(newOrder);
     }
 
     @Override
@@ -68,6 +72,47 @@ public class OrderServiceImpl implements OrderService {
         );
         order.setStatus(Order.Status.valueOf(requestDto.status()));
         return orderMapper.toDto(orderRepository.save(order));
+    }
+
+    @Override
+    public Set<OrderItemDto> findOrderItemsByOrderId(Long orderId, Long userId) {
+        return findOrder(orderId, userId).getOrderItems()
+                .stream()
+                .map(orderItemMapper::toDto)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public OrderItemDto findOrderItemById(Long orderId, Long itemId, Long userId) {
+        checkOrderExistsForUser(orderId, userId);
+        return orderItemMapper.toDto(findOrderItem(itemId, orderId));
+    }
+
+    private OrderItem findOrderItem(Long itemId, Long orderId) {
+        return orderItemRepository.findByIdAndOrderId(itemId, orderId).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Can't find order item by id: " + itemId
+                                + " in order by id: " + orderId
+                )
+        );
+    }
+
+    private void checkOrderExistsForUser(Long orderId,Long userId) {
+        if (!orderRepository.existsByIdAndUserId(orderId, userId)) {
+            throw new EntityNotFoundException(
+                    "Can't find order with id: " + orderId
+                            + " for user with id: " + userId
+            );
+        }
+    }
+
+    private Order findOrder(Long orderId, Long userId) {
+        return orderRepository.findByIdAndUserId(orderId, userId).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Can't find order by id: " + orderId + " "
+                                + " for user with id: " + userId
+                )
+        );
     }
 
     private void checkShoppingCartIsEmpty(ShoppingCart userShoppingCart) {
