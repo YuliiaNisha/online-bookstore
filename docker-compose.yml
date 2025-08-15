@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    platform: linux/amd64
+    image: mysql:8.0.39
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=hfdhd6254jfgg
+      - MYSQL_DATABASE=bookstore
+    ports:
+      - ${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+  app:
+    depends_on:
+      - mysqldb
+    image: bookstore
+    build: .
+    env_file: ./.env
+    ports:
+      - ${SPRING_LOCAL_PORT}:${SPRING_DOCKER_PORT}
+      - ${DEBUG_PORT}:${DEBUG_PORT}
+    environment:
+      SPRING_APPLICATION_JSON: '{
+          "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/bookstore?serverTimezone=UTC",
+          "spring.datasource.username" : "root",
+          "spring.datasource.password" : "hfdhd6254jfgg",
+          "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL8Dialect",
+          "spring.datasource.driver-class-name" : "com.mysql.cj.jdbc.Driver"
+        }'
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
