@@ -1,0 +1,1 @@
+insert into books (id, title, author, isbn, price, description, coverImage, categories, isDeleted) values (1, 'Crime and Punishment', 'Fyodor Dostoevsky', '9780143058144', 15.25, 'A psychological drama', '/images/crime-punishment.jpg', false)
