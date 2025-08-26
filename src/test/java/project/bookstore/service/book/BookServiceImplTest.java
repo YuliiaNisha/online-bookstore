@@ -58,7 +58,7 @@ class BookServiceImplTest {
     private final BookDto hobbitBookUpdatedDto = createHobbitBookUpdatedDto();
     private final BookDtoWithoutCategoryIds hobbitBookDtoWithoutCategoryIds =
             createBookDtoWithoutCategoryIds();
-    private final PageRequest defaultPageRequest = PageRequest.of(1, 10);
+    private final PageRequest defaultPageRequest = PageRequest.of(0, 10);
     private Category fictionCategory;
     private Category fantasyCategory;
     private Book hobbitBookWithoutId;

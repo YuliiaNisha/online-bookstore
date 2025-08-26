@@ -1,8 +1,8 @@
 package project.bookstore.service.category;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -38,13 +38,19 @@ class CategoryServiceImplTest {
     private final CreateCategoryRequestDto requestDto = createRequestDto();
     private final CategoryDto categoryDto = createCategoryDto();
     private final UpdateCategoryRequestDto updateCategoryRequestDto = createUpdateRequestDto();
-    private final PageRequest defaultPageRequest = PageRequest.of(1, 10);
-    private Category category;
+    private final PageRequest defaultPageRequest = PageRequest.of(0, 10);
+    private Category categoryWithId;
+    private Category categoryWithoutId;
 
     @BeforeEach
     void setUp() {
-        category = new Category()
+        categoryWithId = new Category()
                 .setId(1L)
+                .setName("Fiction")
+                .setDescription("Imaginative storytelling including "
+                        + "novels, short stories, and fantasy")
+                .setDeleted(false);
+        categoryWithoutId = new Category()
                 .setName("Fiction")
                 .setDescription("Imaginative storytelling including "
                         + "novels, short stories, and fantasy")
@@ -53,9 +59,9 @@ class CategoryServiceImplTest {
 
     @Test
     void createCategory_validRequestDto_returnsCategoryDto() {
-        when(categoryMapper.toModel(requestDto)).thenReturn(category);
-        when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toDto(category)).thenReturn(categoryDto);
+        when(categoryMapper.toModel(requestDto)).thenReturn(categoryWithoutId);
+        when(categoryRepository.save(categoryWithoutId)).thenReturn(categoryWithId);
+        when(categoryMapper.toDto(categoryWithId)).thenReturn(categoryDto);
 
         CategoryDto actual = categoryService.createCategory(requestDto);
 
@@ -63,16 +69,16 @@ class CategoryServiceImplTest {
         assertEquals(categoryDto, actual);
 
         verify(categoryMapper).toModel(requestDto);
-        verify(categoryRepository).save(category);
-        verify(categoryMapper).toDto(category);
+        verify(categoryRepository).save(categoryWithoutId);
+        verify(categoryMapper).toDto(categoryWithId);
         verifyNoMoreInteractions(categoryMapper, categoryRepository);
     }
 
     @Test
     void findAll_returnsCategoriesPage() {
         when(categoryRepository.findAll(defaultPageRequest))
-                .thenReturn(new PageImpl<>(List.of(category)));
-        when(categoryMapper.toDto(category)).thenReturn(categoryDto);
+                .thenReturn(new PageImpl<>(List.of(categoryWithId)));
+        when(categoryMapper.toDto(categoryWithId)).thenReturn(categoryDto);
 
         Page<CategoryDto> actual = categoryService.findAll(defaultPageRequest);
 
@@ -81,14 +87,14 @@ class CategoryServiceImplTest {
         assertEquals(categoryDto, actual.getContent().get(0));
 
         verify(categoryRepository).findAll(defaultPageRequest);
-        verify(categoryMapper).toDto(category);
+        verify(categoryMapper).toDto(categoryWithId);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
     void getCategoryById_validId_returnsCategoryDto() {
-        when(categoryRepository.findById(ID)).thenReturn(Optional.of(category));
-        when(categoryMapper.toDto(category)).thenReturn(categoryDto);
+        when(categoryRepository.findById(ID)).thenReturn(Optional.of(categoryWithId));
+        when(categoryMapper.toDto(categoryWithId)).thenReturn(categoryDto);
 
         CategoryDto actual = categoryService.getCategoryById(ID);
 
@@ -96,7 +102,7 @@ class CategoryServiceImplTest {
         assertEquals(categoryDto, actual);
 
         verify(categoryRepository).findById(ID);
-        verify(categoryMapper).toDto(category);
+        verify(categoryMapper).toDto(categoryWithId);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
@@ -117,9 +123,9 @@ class CategoryServiceImplTest {
     @Test
     void update_validId_returnsCategoryDto() {
         when(categoryRepository.findById(ID))
-                .thenReturn(Optional.of(category));
-        when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toDto(category)).thenReturn(categoryDto);
+                .thenReturn(Optional.of(categoryWithId));
+        when(categoryRepository.save(categoryWithId)).thenReturn(categoryWithId);
+        when(categoryMapper.toDto(categoryWithId)).thenReturn(categoryDto);
 
         CategoryDto actual = categoryService.update(ID, updateCategoryRequestDto);
 
@@ -127,9 +133,9 @@ class CategoryServiceImplTest {
         assertEquals(categoryDto, actual);
 
         verify(categoryRepository).findById(ID);
-        verify(categoryMapper).updateCategory(category, updateCategoryRequestDto);
-        verify(categoryRepository).save(category);
-        verify(categoryMapper).toDto(category);
+        verify(categoryMapper).updateCategory(categoryWithId, updateCategoryRequestDto);
+        verify(categoryRepository).save(categoryWithId);
+        verify(categoryMapper).toDto(categoryWithId);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
@@ -149,11 +155,13 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    void delete_validId_returnsCategoryDto() {
-        when(categoryRepository.findById(ID)).thenReturn(Optional.of(category));
+    void delete_validId_deletesCategory() {
+        when(categoryRepository.findById(ID)).thenReturn(Optional.of(categoryWithId));
+
+        categoryService.delete(ID);
 
         verify(categoryRepository).findById(ID);
-        verify(categoryRepository).delete(category);
+        verify(categoryRepository).delete(categoryWithId);
         verifyNoMoreInteractions(categoryRepository);
     }
 
