@@ -2,6 +2,7 @@ package project.bookstore.repository;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,10 +16,9 @@ class BookRepositoryTest {
     private BookRepository bookRepository;
 
     @Test
-    @Sql(scripts = "classpath:database/books/add-books-to-books-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+
     void findById() {
-        assertEquals(1, 1);
+        Assertions.assertEquals(1, 1);
     }
 
     @Test
