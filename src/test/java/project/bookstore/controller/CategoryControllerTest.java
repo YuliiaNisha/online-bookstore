@@ -81,6 +81,7 @@ class CategoryControllerTest {
             scripts = "classpath:database/category/"
                     + "add-two-default-categories-to-categories-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @WithMockUser(username = "user", roles = {"USER"})
     @Test
     void getAll_returnsAllCategories() throws Exception {
         MvcResult result = mockMvc.perform(get("/categories")
@@ -104,6 +105,7 @@ class CategoryControllerTest {
 
     @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @WithMockUser(username = "user", roles = {"USER"})
     @Test
     void getCategoryById_validId_returnsCategoryDto() throws Exception {
         MvcResult result = mockMvc.perform(get("/categories/{id}", 1L)
@@ -200,6 +202,7 @@ class CategoryControllerTest {
             "classpath:database/booksCategories/insert-into-books-categories.sql"
     },
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @WithMockUser(username = "user", roles = {"USER"})
     @Test
     void getBooksByCategoryId() throws Exception {
         MvcResult result = mockMvc.perform(
