@@ -93,7 +93,7 @@ class BookControllerTest {
                 Set.of(ID_FIRST)
         );
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
-        BookDto expected = new BookDto(
+        BookDto expected = new BookDto (
                 1L,
                 "Harry Potter and the Philosopher's Stone",
                 "J. K. Rowling",
@@ -122,15 +122,6 @@ class BookControllerTest {
         Assertions.assertTrue(
                 EqualsBuilder.reflectionEquals(expected, actual, "id")
         );
-        /////
-        Assertions.assertEquals(expected.title(), actual.title());
-        Assertions.assertEquals(expected.author(), actual.author());
-        Assertions.assertEquals(expected.isbn(), actual.isbn());
-        Assertions.assertEquals(expected.price(), actual.price());
-        Assertions.assertEquals(expected.description(), actual.description());
-        Assertions.assertEquals(expected.coverImage(), actual.coverImage());
-        Assertions.assertEquals(expected.categoryIds(), actual.categoryIds();
-
     }
 
     @Sql(
