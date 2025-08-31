@@ -196,7 +196,7 @@ class CategoryControllerTest {
             "classpath:database/booksCategories/clear-books-categories-table.sql",
             "classpath:database/book/clear-books-table.sql",
             "classpath:database/category/add-two-default-categories-to-categories-table.sql",
-            "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+            "classpath:database/book/add-two-default-books-to-books-table.sql",
             "classpath:database/booksCategories/insert-into-books-categories.sql"
     },
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

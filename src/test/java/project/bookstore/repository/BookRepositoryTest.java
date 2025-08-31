@@ -26,7 +26,7 @@ import project.bookstore.model.Category;
         "classpath:database/book/clear-books-table.sql",
         "classpath:database/category/clear-categories-table.sql",
         "classpath:database/category/add-default-category-to-categories-table.sql",
-        "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+        "classpath:database/book/add-two-default-books-to-books-table.sql",
         "classpath:database/booksCategories/insert-into-books-categories.sql",
 },
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD

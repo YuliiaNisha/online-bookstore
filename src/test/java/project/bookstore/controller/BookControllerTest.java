@@ -125,7 +125,7 @@ class BookControllerTest {
     }
 
     @Sql(
-            scripts = "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+            scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     @DisplayName("Returns a book when ID is valid")
@@ -142,7 +142,7 @@ class BookControllerTest {
         Assertions.assertEquals(bookDto1, actual);
     }
 
-    @Sql(scripts = "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+    @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     @DisplayName("Returns all books from DB")
@@ -167,7 +167,7 @@ class BookControllerTest {
         Assertions.assertEquals(bookDto2, actual2);
     }
 
-    @Sql(scripts = "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+    @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
@@ -179,7 +179,7 @@ class BookControllerTest {
         Assertions.assertFalse(bookRepository.existsById(ID_FIRST));
     }
 
-    @Sql(scripts = "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+    @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
@@ -218,7 +218,7 @@ class BookControllerTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Sql(scripts = "classpath:database/booksCategories/add-two-default-books-to-books-table.sql",
+    @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("Search books with parameters; returns matching books")
     @Test
