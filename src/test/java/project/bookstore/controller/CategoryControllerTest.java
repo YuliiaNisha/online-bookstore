@@ -77,9 +77,7 @@ class CategoryControllerTest {
         );
     }
 
-    @Sql(
-            scripts = "classpath:database/category/"
-                    + "add-two-default-categories-to-categories-table.sql",
+    @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "user", roles = {"USER"})
     @Test
