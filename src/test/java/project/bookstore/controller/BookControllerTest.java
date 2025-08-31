@@ -93,7 +93,7 @@ class BookControllerTest {
                 Set.of(ID_FIRST)
         );
         String jsonRequest = objectMapper.writeValueAsString(requestDto);
-        BookDto expected = new BookDto (
+        BookDto expected = new BookDto(
                 1L,
                 "Harry Potter and the Philosopher's Stone",
                 "J. K. Rowling",
