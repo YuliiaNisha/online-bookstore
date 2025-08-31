@@ -79,6 +79,10 @@ class BookControllerTest {
         );
     }
 
+    @Sql(scripts = {
+            "classpath:database/book/add-default-category-to-categories-table.sql"
+    },
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void createBook_validRequestDto_returnsBookDto() throws Exception {
@@ -129,6 +133,7 @@ class BookControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     @DisplayName("Returns a book when ID is valid")
+    @WithMockUser(username = "user", roles = {"USER"})
     void getBookById_validId_returnsBookDto() throws Exception {
         MvcResult result = mockMvc.perform(
                         get("/books/{id}", ID_FIRST)
@@ -146,6 +151,7 @@ class BookControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     @DisplayName("Returns all books from DB")
+    @WithMockUser(username = "user", roles = {"USER"})
     void getAll_returnsAllBooks() throws Exception {
         MvcResult result = mockMvc.perform(
                         get("/books")
@@ -180,9 +186,9 @@ class BookControllerTest {
     }
 
     @Sql(scripts = {
-            "classpath:database/book/add-default-category-to-categories-table.sql",
+            "classpath:database/category/add-default-category-to-categories-table.sql",
             "classpath:database/book/add-two-default-books-to-books-table.sql",
-            "classpath:database/book/insert-into-books-categories.sql"
+            "classpath:database/booksCategories/insert-into-books-categories.sql"
     },
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -225,6 +231,7 @@ class BookControllerTest {
     @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("Search books with parameters; returns matching books")
+    @WithMockUser(username = "user", roles = {"USER"})
     @Test
     void search_validRequest_returnsBookDtos() throws Exception {
         BookSearchParameters bookSearchParameters = new BookSearchParameters(
