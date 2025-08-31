@@ -122,6 +122,15 @@ class BookControllerTest {
         Assertions.assertTrue(
                 EqualsBuilder.reflectionEquals(expected, actual, "id")
         );
+        /////
+        Assertions.assertEquals(expected.title(), actual.title());
+        Assertions.assertEquals(expected.author(), actual.author());
+        Assertions.assertEquals(expected.isbn(), actual.isbn());
+        Assertions.assertEquals(expected.price(), actual.price());
+        Assertions.assertEquals(expected.description(), actual.description());
+        Assertions.assertEquals(expected.coverImage(), actual.coverImage());
+        Assertions.assertEquals(expected.categoryIds(), actual.categoryIds();
+
     }
 
     @Sql(
@@ -179,7 +188,11 @@ class BookControllerTest {
         Assertions.assertFalse(bookRepository.existsById(ID_FIRST));
     }
 
-    @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
+    @Sql(scripts = {
+            "classpath:database/book/add-default-category-to-categories-table.sql",
+            "classpath:database/book/add-two-default-books-to-books-table.sql",
+            "classpath:database/book/insert-into-books-categories.sql"
+    },
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
