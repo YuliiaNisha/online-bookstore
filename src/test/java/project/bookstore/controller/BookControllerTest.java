@@ -80,7 +80,7 @@ class BookControllerTest {
     }
 
     @Sql(scripts = {
-            "classpath:database/book/add-default-category-to-categories-table.sql"
+            "classpath:database/category/add-default-category-to-categories-table.sql"
     },
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
