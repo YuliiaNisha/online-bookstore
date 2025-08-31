@@ -1,1 +1,1 @@
-DELETE FROM categories;
+TRUNCATE TABLE books;

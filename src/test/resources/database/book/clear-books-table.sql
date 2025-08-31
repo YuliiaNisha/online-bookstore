@@ -1,1 +1,1 @@
-DELETE FROM books;
+TRUNCATE TABLE books;
