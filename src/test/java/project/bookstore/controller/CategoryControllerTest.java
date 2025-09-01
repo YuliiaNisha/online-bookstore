@@ -29,8 +29,10 @@ import project.bookstore.dto.category.UpdateCategoryRequestDto;
 
 @Sql(scripts = {
         "classpath:database/booksCategories/clear-books-categories-table.sql",
-        "classpath:database/category/clear-categories-table.sql"
-}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        "classpath:database/category/clear-categories-table.sql",
+        "classpath:database/category/add-two-default-categories-to-categories-table.sql"
+},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryControllerTest {
     protected static MockMvc mockMvc;
@@ -78,8 +80,6 @@ class CategoryControllerTest {
         );
     }
 
-    @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "user", roles = {"USER"})
     @Test
     void getAll_returnsAllCategories() throws Exception {
@@ -102,8 +102,6 @@ class CategoryControllerTest {
         Assertions.assertEquals(expectedCategoryDto2, actual2);
     }
 
-    @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "user", roles = {"USER"})
     @Test
     void getCategoryById_validId_returnsCategoryDto() throws Exception {
@@ -121,8 +119,6 @@ class CategoryControllerTest {
         Assertions.assertEquals(expectedCategoryDto1, actual);
     }
 
-    @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void updateCategory_validRequest_returnsUpdatedCategoryDto() throws Exception {
@@ -152,8 +148,6 @@ class CategoryControllerTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void updateCategory_nullValuesInRequest_returnsUpdatedCategoryDto() throws Exception {
@@ -178,8 +172,6 @@ class CategoryControllerTest {
         Assertions.assertEquals(expectedCategoryDto1, actual);
     }
 
-    @Sql(scripts = "classpath:database/category/add-two-default-categories-to-categories-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void deleteCategory_validId_removesCategoryFromDb() throws Exception {
@@ -196,7 +188,6 @@ class CategoryControllerTest {
     @Sql(scripts = {
             "classpath:database/booksCategories/clear-books-categories-table.sql",
             "classpath:database/book/clear-books-table.sql",
-            "classpath:database/category/add-two-default-categories-to-categories-table.sql",
             "classpath:database/book/add-two-default-books-to-books-table.sql",
             "classpath:database/booksCategories/insert-into-books-categories.sql"
     },
