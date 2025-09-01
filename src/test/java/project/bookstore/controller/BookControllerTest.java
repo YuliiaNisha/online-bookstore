@@ -33,8 +33,8 @@ import project.bookstore.dto.book.UpdateBookRequestDto;
 import project.bookstore.repository.BookRepository;
 
 @Sql(scripts = {"classpath:database/booksCategories/clear-books-categories-table.sql",
-        "classpath:database/book/clear-books-table.sql",
-        "classpath:database/category/clear-categories-table.sql"
+        "classpath:database/category/clear-categories-table.sql",
+        "classpath:database/book/clear-books-table.sql"
 },
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

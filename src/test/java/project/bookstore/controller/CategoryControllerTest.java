@@ -28,6 +28,7 @@ import project.bookstore.dto.category.CreateCategoryRequestDto;
 import project.bookstore.dto.category.UpdateCategoryRequestDto;
 
 @Sql(scripts = {
+        "classpath:database/booksCategories/clear-books-categories-table.sql",
         "classpath:database/category/clear-categories-table.sql"
 }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
