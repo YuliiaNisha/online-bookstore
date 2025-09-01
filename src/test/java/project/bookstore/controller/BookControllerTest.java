@@ -34,7 +34,10 @@ import project.bookstore.repository.BookRepository;
 
 @Sql(scripts = {"classpath:database/booksCategories/clear-books-categories-table.sql",
         "classpath:database/category/clear-categories-table.sql",
-        "classpath:database/book/clear-books-table.sql"
+        "classpath:database/category/add-default-category-to-categories-table.sql",
+        "classpath:database/book/clear-books-table.sql",
+        "classpath:database/book/add-two-default-books-to-books-table.sql",
+        "classpath:database/booksCategories/insert-into-books-categories.sql"
 },
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -80,10 +83,6 @@ class BookControllerTest {
         );
     }
 
-    @Sql(scripts =
-            "classpath:database/category/add-default-category-to-categories-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void createBook_validRequestDto_returnsBookDto() throws Exception {
@@ -129,12 +128,6 @@ class BookControllerTest {
         );
     }
 
-    @Sql(
-            scripts = {"classpath:database/category/add-default-category-to-categories-table.sql",
-                    "classpath:database/book/add-two-default-books-to-books-table.sql",
-                    "classpath:database/booksCategories/insert-into-books-categories.sql"
-            },
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     @DisplayName("Returns a book when ID is valid")
     @WithMockUser(username = "user", roles = {"USER"})
@@ -151,11 +144,6 @@ class BookControllerTest {
         Assertions.assertEquals(bookDto1, actual);
     }
 
-    @Sql(scripts = {"classpath:database/category/add-default-category-to-categories-table.sql",
-            "classpath:database/book/add-two-default-books-to-books-table.sql",
-            "classpath:database/booksCategories/insert-into-books-categories.sql"
-    },
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Test
     @DisplayName("Returns all books from DB")
     @WithMockUser(username = "user", roles = {"USER"})
@@ -180,8 +168,6 @@ class BookControllerTest {
         Assertions.assertEquals(bookDto2, actual2);
     }
 
-    @Sql(scripts = "classpath:database/book/add-two-default-books-to-books-table.sql",
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void delete_validId_removesBookByIdFromDB() throws Exception {
@@ -192,11 +178,6 @@ class BookControllerTest {
         Assertions.assertFalse(bookRepository.existsById(ID_FIRST));
     }
 
-    @Sql(scripts = {"classpath:database/category/add-default-category-to-categories-table.sql",
-            "classpath:database/book/add-two-default-books-to-books-table.sql",
-            "classpath:database/booksCategories/insert-into-books-categories.sql"
-    },
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void update_validRequest_updatesBook() throws Exception {
@@ -234,11 +215,6 @@ class BookControllerTest {
         Assertions.assertEquals(expected, actual);
     }
 
-    @Sql(scripts = {"classpath:database/category/add-default-category-to-categories-table.sql",
-            "classpath:database/book/add-two-default-books-to-books-table.sql",
-            "classpath:database/booksCategories/insert-into-books-categories.sql"
-    },
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @DisplayName("Search books with parameters; returns matching books")
     @WithMockUser(username = "user", roles = {"USER"})
     @Test
