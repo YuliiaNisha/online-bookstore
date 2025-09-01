@@ -32,10 +32,11 @@ import project.bookstore.dto.book.CreateBookRequestDto;
 import project.bookstore.dto.book.UpdateBookRequestDto;
 import project.bookstore.repository.BookRepository;
 
-@Sql(scripts = {"classpath:database/booksCategories/clear-books-categories-table.sql",
+@Sql(scripts = {
+        "classpath:database/booksCategories/clear-books-categories-table.sql",
+        "classpath:database/book/clear-books-table.sql",
         "classpath:database/category/clear-categories-table.sql",
         "classpath:database/category/add-default-category-to-categories-table.sql",
-        "classpath:database/book/clear-books-table.sql",
         "classpath:database/book/add-two-default-books-to-books-table.sql",
         "classpath:database/booksCategories/insert-into-books-categories.sql"
 },
