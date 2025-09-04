@@ -9,10 +9,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,10 +34,17 @@ import project.bookstore.model.Category;
 import project.bookstore.repository.BookRepository;
 import project.bookstore.repository.CategoryRepository;
 import project.bookstore.repository.SpecificationBuilder;
+import project.bookstore.util.ServiceTestUtil;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceImplTest {
-    public static final long ID = 1L;
+    public static final Long ID = 1L;
+    private static BookDto hobbitBookDto;
+    private static BookDto hobbitBookUpdatedDto;
+    private static BookDtoWithoutCategoryIds hobbitBookDtoWithoutCategoryIds;
+    private static CreateBookRequestDto requestDto;
+    private static PageRequest defaultPageRequest;
+    private static UpdateBookRequestDto updateHobbitBookRequestDto;
     @Mock
     private BookMapper bookMapper;
     @Mock
@@ -47,57 +53,46 @@ class BookServiceImplTest {
     private CategoryRepository categoryRepository;
     @Mock
     private SpecificationBuilder<Book, BookSearchParameters> bookSpecificationBuilder;
-
     @InjectMocks
     private BookServiceImpl bookService;
-
-    private final CreateBookRequestDto createHobbitBookRequestDto = createHobbitBookRequestDto();
-    private final UpdateBookRequestDto updateHobbitBookRequestDto =
-            createUpdateHobbitBookRequestDto();
-    private final BookDto hobbitBookDto = createHobbitBookDto();
-    private final BookDto hobbitBookUpdatedDto = createHobbitBookUpdatedDto();
-    private final BookDtoWithoutCategoryIds hobbitBookDtoWithoutCategoryIds =
-            createBookDtoWithoutCategoryIds();
-    private final PageRequest defaultPageRequest = PageRequest.of(0, 10);
-    private Category fictionCategory;
-    private Category fantasyCategory;
     private Book hobbitBookWithoutId;
     private Book hobbitBookWithId;
+    private Category fictionCategory;
     private List<Book> defaultBookList;
+    private BookSearchParameters defaultBookSearchParameters;
+
+    @BeforeAll
+    static void beforeAll() {
+        requestDto = ServiceTestUtil.getCreateHobbitBookRequestDto();
+        hobbitBookDto = ServiceTestUtil.getHobbitBookDto();
+        hobbitBookUpdatedDto = ServiceTestUtil.getHobbitBookUpdatedDto();
+        updateHobbitBookRequestDto = ServiceTestUtil.getUpdateHobbitBookRequestDto();
+        defaultPageRequest = ServiceTestUtil.getDefaultPageRequest();
+        hobbitBookDtoWithoutCategoryIds =
+                ServiceTestUtil.getBookDtoWithoutCategoryIds();
+    }
 
     @BeforeEach
     void setUp() {
-        fictionCategory = new Category()
-                .setId(1L)
-                .setName("Fiction")
-                .setDescription("Imaginative storytelling including "
-                        + "novels, short stories, and fantasy")
-                .setDeleted(false);
-        fantasyCategory = new Category()
-                .setId(2L)
-                .setName("Fantasy")
-                .setDescription("Magical worlds, mythical creatures, and heroic quests")
-                .setDeleted(false);
-        hobbitBookWithoutId = createHobbitBook(false);
-        hobbitBookWithId = createHobbitBook(true);
-        defaultBookList = List.of(hobbitBookWithId);
+        hobbitBookWithoutId = ServiceTestUtil.getHobbitBookWithoutId();
+        hobbitBookWithId = ServiceTestUtil.getHobbitBookWithId();
+        fictionCategory = ServiceTestUtil.getFictionCategory();
+        defaultBookList = ServiceTestUtil.getDefaultBookList();
+        defaultBookSearchParameters = ServiceTestUtil.getDefaultBookSearchParameters();
     }
 
     @Test
     void save_validRequest_returnsBookDto() {
-        //given
-        when(bookMapper.toModel(createHobbitBookRequestDto)).thenReturn(hobbitBookWithoutId);
+        when(bookMapper.toModel(requestDto)).thenReturn(hobbitBookWithoutId);
         when(bookRepository.save(hobbitBookWithoutId)).thenReturn(hobbitBookWithId);
         when(bookMapper.toDto(hobbitBookWithId)).thenReturn(hobbitBookDto);
 
-        //when
-        BookDto actual = bookService.save(createHobbitBookRequestDto);
+        BookDto actual = bookService.save(requestDto);
 
-        //then
         assertNotNull(actual);
         assertEquals(hobbitBookDto, actual);
 
-        verify(bookMapper).toModel(createHobbitBookRequestDto);
+        verify(bookMapper).toModel(requestDto);
         verify(bookRepository).save(hobbitBookWithoutId);
         verify(bookMapper).toDto(hobbitBookWithId);
         verifyNoMoreInteractions(bookMapper, bookRepository);
@@ -216,20 +211,19 @@ class BookServiceImplTest {
 
     @Test
     void search_validRequest_providesPageOfBooks() {
-        BookSearchParameters bookSearchParameters = createBookSearchParameters();
-        when(bookSpecificationBuilder.build(bookSearchParameters))
+        when(bookSpecificationBuilder.build(defaultBookSearchParameters))
                 .thenReturn(Specification.where(null));
         when(bookRepository.findAll(any(Specification.class), eq(defaultPageRequest)))
                 .thenReturn(new PageImpl<>(defaultBookList));
         when(bookMapper.toDto(hobbitBookWithId)).thenReturn(hobbitBookDto);
 
-        Page<BookDto> actual = bookService.search(bookSearchParameters, defaultPageRequest);
+        Page<BookDto> actual = bookService.search(defaultBookSearchParameters, defaultPageRequest);
 
         assertNotNull(actual);
         assertEquals(1, actual.getTotalElements());
         assertEquals(hobbitBookDto, actual.getContent().get(0));
 
-        verify(bookSpecificationBuilder).build(bookSearchParameters);
+        verify(bookSpecificationBuilder).build(defaultBookSearchParameters);
         verify(bookRepository).findAll(any(Specification.class), eq(defaultPageRequest));
         verify(bookMapper).toDto(hobbitBookWithId);
         verifyNoMoreInteractions(bookSpecificationBuilder, bookRepository, bookMapper);
@@ -264,7 +258,9 @@ class BookServiceImplTest {
 
         EntityNotFoundException actual = assertThrows(
                 EntityNotFoundException.class,
-                () -> bookService.getBooksByCategoryId(ID, defaultPageRequest)
+                () -> bookService.getBooksByCategoryId(
+                        ID, defaultPageRequest
+                )
         );
 
         assertNotNull(actual);
@@ -272,92 +268,5 @@ class BookServiceImplTest {
 
         verify(categoryRepository).findById(ID);
         verifyNoMoreInteractions(categoryRepository, bookRepository, bookMapper);
-    }
-
-    private BookDto createHobbitBookDto() {
-        return new BookDto(
-                1L,
-                "The Hobbit",
-                "J. R. R. Tolkien",
-                "978-0547928227",
-                BigDecimal.valueOf(14.95),
-                "A fantasy novel about Bilbo Baggins’ unexpected "
-                        + "journey with dwarves and a wizard to reclaim a stolen treasure.",
-                "https://example.com/the-hobbit.jpg",
-                Set.of(1L, 2L)
-        );
-    }
-
-    private CreateBookRequestDto createHobbitBookRequestDto() {
-        return new CreateBookRequestDto(
-                "The Hobbit",
-                "J. R. R. Tolkien",
-                "978-0547928227",
-                BigDecimal.valueOf(14.95),
-                "A fantasy novel about Bilbo Baggins’ unexpected "
-                        + "journey with dwarves and a wizard to reclaim a stolen treasure.",
-                "https://example.com/the-hobbit.jpg",
-                Set.of(1L, 2L)
-        );
-    }
-
-    private Book createHobbitBook(boolean idExists) {
-        Book book = new Book()
-                .setTitle("The Hobbit")
-                .setAuthor("J. R. R. Tolkien")
-                .setIsbn("978-0547928227")
-                .setPrice(BigDecimal.valueOf(14.95))
-                .setDescription("A fantasy novel about Bilbo Baggins’ unexpected "
-                        + "journey with dwarves and a wizard to reclaim a stolen treasure.")
-                .setCoverImage("https://example.com/the-hobbit.jpg")
-                .setCategories(Set.of(fictionCategory, fantasyCategory));
-        if (idExists) {
-            book.setId(1L);
-        }
-        return book;
-    }
-
-    private UpdateBookRequestDto createUpdateHobbitBookRequestDto() {
-        return new UpdateBookRequestDto(
-                "The Hobbit updated",
-                "J. R. R. Tolkien updated",
-                "978-0547928227111",
-                BigDecimal.valueOf(140.95),
-                "updated A fantasy novel about Bilbo Baggins’ unexpected "
-                        + "journey with dwarves and a wizard to reclaim a stolen treasure.",
-                "https://example.com/the-hobbit-updated.jpg",
-                Set.of(1L)
-        );
-    }
-
-    private BookDto createHobbitBookUpdatedDto() {
-        return new BookDto(
-                1L,
-                "The Hobbit updated",
-                "J. R. R. Tolkien updated",
-                "978-0547928227111",
-                BigDecimal.valueOf(140.95),
-                "updated A fantasy novel about Bilbo Baggins’ unexpected "
-                        + "journey with dwarves and a wizard to reclaim a stolen treasure.",
-                "https://example.com/the-hobbit-updated.jpg",
-                Set.of(1L)
-        );
-    }
-
-    private BookSearchParameters createBookSearchParameters() {
-        return new BookSearchParameters("a", null, null, null);
-    }
-
-    private BookDtoWithoutCategoryIds createBookDtoWithoutCategoryIds() {
-        return new BookDtoWithoutCategoryIds(
-                1L,
-                "The Hobbit",
-                "J. R. R. Tolkien",
-                "978-0547928227",
-                BigDecimal.valueOf(14.95),
-                "A fantasy novel about Bilbo Baggins’ unexpected "
-                        + "journey with dwarves and a wizard to reclaim a stolen treasure.",
-                "https://example.com/the-hobbit.jpg"
-        );
     }
 }

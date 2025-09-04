@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.Optional;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,36 +26,36 @@ import project.bookstore.exception.EntityNotFoundException;
 import project.bookstore.mapper.CategoryMapper;
 import project.bookstore.model.Category;
 import project.bookstore.repository.CategoryRepository;
+import project.bookstore.util.ServiceTestUtil;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
-    public static final long ID = 1L;
+    public static final Long ID = 1L;
+    private static CreateCategoryRequestDto requestDto;
+    private static CategoryDto categoryDto;
+    private static PageRequest defaultPageRequest;
+    private static UpdateCategoryRequestDto updateCategoryRequestDto;
     @Mock
     private CategoryMapper categoryMapper;
     @Mock
     private CategoryRepository categoryRepository;
     @InjectMocks
     private CategoryServiceImpl categoryService;
-    private final CreateCategoryRequestDto requestDto = createRequestDto();
-    private final CategoryDto categoryDto = createCategoryDto();
-    private final UpdateCategoryRequestDto updateCategoryRequestDto = createUpdateRequestDto();
-    private final PageRequest defaultPageRequest = PageRequest.of(0, 10);
     private Category categoryWithId;
     private Category categoryWithoutId;
 
+    @BeforeAll
+    static void beforeAll() {
+        requestDto = ServiceTestUtil.getCreateFictionCategoryRequestDto();
+        categoryDto = ServiceTestUtil.getFictionCategoryDto();
+        updateCategoryRequestDto = ServiceTestUtil.getUpdateFictionCategoryRequestDto();
+        defaultPageRequest = ServiceTestUtil.getDefaultPageRequest();
+    }
+
     @BeforeEach
     void setUp() {
-        categoryWithId = new Category()
-                .setId(1L)
-                .setName("Fiction")
-                .setDescription("Imaginative storytelling including "
-                        + "novels, short stories, and fantasy")
-                .setDeleted(false);
-        categoryWithoutId = new Category()
-                .setName("Fiction")
-                .setDescription("Imaginative storytelling including "
-                        + "novels, short stories, and fantasy")
-                .setDeleted(false);
+        categoryWithId = ServiceTestUtil.getFictionCategory();
+        categoryWithoutId = ServiceTestUtil.getFictionCategoryWithoutId();
     }
 
     @Test
@@ -178,22 +179,5 @@ class CategoryServiceImplTest {
 
         verify(categoryRepository).findById(ID);
         verifyNoMoreInteractions(categoryRepository);
-    }
-
-    private CreateCategoryRequestDto createRequestDto() {
-        return new CreateCategoryRequestDto(
-                "Fiction",
-                "Imaginative storytelling including novels, short stories, and fantasy");
-    }
-
-    private CategoryDto createCategoryDto() {
-        return new CategoryDto(ID, "Fiction", "Imaginative storytelling "
-                + "including novels, short stories, and fantasy");
-    }
-
-    private UpdateCategoryRequestDto createUpdateRequestDto() {
-        return new UpdateCategoryRequestDto("Fiction updated",
-                "updated Imaginative storytelling "
-                + "including novels, short stories, and fantasy");
     }
 }

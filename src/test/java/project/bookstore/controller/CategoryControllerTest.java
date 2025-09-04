@@ -1,5 +1,7 @@
 package project.bookstore.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -9,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder;
 import project.bookstore.dto.book.BookDtoWithoutCategoryIds;
 import project.bookstore.dto.category.CategoryDto;
 import project.bookstore.dto.category.CreateCategoryRequestDto;
 import project.bookstore.dto.category.UpdateCategoryRequestDto;
+import project.bookstore.util.ControllerRepositoryTestUtil;
 
 @Sql(scripts = {
         "classpath:database/booksCategories/clear-books-categories-table.sql",
@@ -36,10 +37,14 @@ import project.bookstore.dto.category.UpdateCategoryRequestDto;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CategoryControllerTest {
     protected static MockMvc mockMvc;
+    private static BookDtoWithoutCategoryIds gatsbyWithoutCategoryIdsExpected;
+    private static CreateCategoryRequestDto createFictionCategoryRequest;
+    private static CategoryDto updatedFictionCategoryDtoExpected;
+    private static CategoryDto fictionCategoryDtoExpected;
+    private static UpdateCategoryRequestDto emptyUpdateCategoryRequest;
+    private static UpdateCategoryRequestDto updateFictionCategoryRequest;
     @Autowired
     private ObjectMapper objectMapper;
-    private final CategoryDto expectedCategoryDto1 = getCategoryDto1();
-    private final CategoryDto expectedCategoryDto2 = getCategoryDto2();
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -47,21 +52,24 @@ class CategoryControllerTest {
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
+        createFictionCategoryRequest =
+                ControllerRepositoryTestUtil.getCreateFictionCategoryRequest();
+        fictionCategoryDtoExpected =
+                ControllerRepositoryTestUtil.getFictionCategoryDtoExpected();
+        updateFictionCategoryRequest =
+                ControllerRepositoryTestUtil.getUpdateFictionCategoryRequest();
+        updatedFictionCategoryDtoExpected =
+                ControllerRepositoryTestUtil.getUpdatedFictionCategoryDtoExpected();
+        emptyUpdateCategoryRequest =
+                ControllerRepositoryTestUtil.getEmptyUpdateCategoryRequest();
+        gatsbyWithoutCategoryIdsExpected =
+                ControllerRepositoryTestUtil.getGatsbyWithoutCategoryIdsExpected();
     }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void createCategory_validRequest_returnsCategoryDto() throws Exception {
-        CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto(
-                "Test Category",
-                "Category for testing"
-        );
-        CategoryDto expected = new CategoryDto(
-                1L,
-                "Test Category",
-                "Category for testing"
-        );
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
+        String jsonRequest = objectMapper.writeValueAsString(createFictionCategoryRequest);
 
         MvcResult result = mockMvc.perform(post("/categories")
                         .content(jsonRequest)
@@ -74,10 +82,8 @@ class CategoryControllerTest {
                 CategoryDto.class
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertTrue(
-                EqualsBuilder.reflectionEquals(expected, actual, "id")
-        );
+        assertNotNull(actual);
+        assertEquals(fictionCategoryDtoExpected, actual);
     }
 
     @WithMockUser(username = "user", roles = {"USER"})
@@ -93,13 +99,13 @@ class CategoryControllerTest {
 
         JsonNode jsonNode = objectMapper.readTree(result.getResponse().getContentAsString());
         JsonNode content = jsonNode.get("content");
-        Assertions.assertEquals(2, content.size());
+        assertEquals(2, content.size());
 
-        CategoryDto actual1 = objectMapper.treeToValue(content.get(0), CategoryDto.class);
-        Assertions.assertEquals(expectedCategoryDto1, actual1);
+        CategoryDto fictionActual = objectMapper.treeToValue(content.get(0), CategoryDto.class);
+        assertEquals(fictionCategoryDtoExpected, fictionActual);
 
-        CategoryDto actual2 = objectMapper.treeToValue(content.get(1), CategoryDto.class);
-        Assertions.assertEquals(expectedCategoryDto2, actual2);
+        CategoryDto comedyActual = objectMapper.treeToValue(content.get(1), CategoryDto.class);
+        assertEquals(fictionCategoryDtoExpected, comedyActual);
     }
 
     @WithMockUser(username = "user", roles = {"USER"})
@@ -115,23 +121,14 @@ class CategoryControllerTest {
                 CategoryDto.class
         );
 
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expectedCategoryDto1, actual);
+        assertNotNull(actual);
+        assertEquals(fictionCategoryDtoExpected, actual);
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void updateCategory_validRequest_returnsUpdatedCategoryDto() throws Exception {
-        CategoryDto expected = new CategoryDto(
-                1L,
-                "Default category1 updated",
-                "Default category1 description"
-        );
-        UpdateCategoryRequestDto requestDto = new UpdateCategoryRequestDto(
-                "Default category1 updated",
-                null
-        );
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
+        String jsonRequest = objectMapper.writeValueAsString(updateFictionCategoryRequest);
 
         MvcResult result = mockMvc.perform(put("/categories/{id}", 1L)
                         .content(jsonRequest)
@@ -144,18 +141,14 @@ class CategoryControllerTest {
                 result.getResponse().getContentAsString(),
                 CategoryDto.class
         );
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expected, actual);
+        assertNotNull(actual);
+        assertEquals(updatedFictionCategoryDtoExpected, actual);
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     void updateCategory_nullValuesInRequest_returnsUpdatedCategoryDto() throws Exception {
-        UpdateCategoryRequestDto requestDto = new UpdateCategoryRequestDto(
-                null,
-                null
-        );
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
+        String jsonRequest = objectMapper.writeValueAsString(emptyUpdateCategoryRequest);
 
         MvcResult result = mockMvc.perform(put("/categories/{id}", 1L)
                         .content(jsonRequest)
@@ -168,8 +161,8 @@ class CategoryControllerTest {
                 result.getResponse().getContentAsString(),
                 CategoryDto.class
         );
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(expectedCategoryDto1, actual);
+        assertNotNull(actual);
+        assertEquals(fictionCategoryDtoExpected, actual);
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -207,30 +200,14 @@ class CategoryControllerTest {
         JsonNode jsonNode = objectMapper.readTree(result.getResponse().getContentAsString());
         JsonNode content = jsonNode.get("content");
 
-        BookDtoWithoutCategoryIds actualBookDto1 = objectMapper.treeToValue(
+        BookDtoWithoutCategoryIds gatsbyActualBookDto = objectMapper.treeToValue(
                 content.get(0), BookDtoWithoutCategoryIds.class
         );
-        Assertions.assertEquals("The Great Gatsby", actualBookDto1.title());
+        assertEquals(gatsbyWithoutCategoryIdsExpected, gatsbyActualBookDto);
 
-        BookDtoWithoutCategoryIds actualBookDto2 = objectMapper.treeToValue(
+        BookDtoWithoutCategoryIds crimeActualBookDto = objectMapper.treeToValue(
                 content.get(1), BookDtoWithoutCategoryIds.class
         );
-        Assertions.assertEquals("1984", actualBookDto2.title());
-    }
-
-    private CategoryDto getCategoryDto1() {
-        return new CategoryDto(
-                1L,
-                "Default category1",
-                "Default category1 description"
-        );
-    }
-
-    private CategoryDto getCategoryDto2() {
-        return new CategoryDto(
-                2L,
-                "Default category2",
-                "Default category2 description"
-        );
+        assertEquals(gatsbyWithoutCategoryIdsExpected, crimeActualBookDto);
     }
 }
