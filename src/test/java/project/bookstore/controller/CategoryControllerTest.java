@@ -105,6 +105,8 @@ class CategoryControllerTest {
         assertEquals(2, content.size());
 
         CategoryDto fictionActual = objectMapper.treeToValue(content.get(0), CategoryDto.class);
+        System.out.println(fictionActual.id());
+        System.out.println(fictionActual.name());
         assertEquals(fictionCategoryDtoExpected, fictionActual);
 
         CategoryDto comedyActual = objectMapper.treeToValue(content.get(1), CategoryDto.class);
