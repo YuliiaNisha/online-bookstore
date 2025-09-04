@@ -210,6 +210,18 @@ public class ControllerRepositoryTestUtil {
         );
     }
 
+    public static BookDtoWithoutCategoryIds getCrimeWithoutCategoryIdsExpected() {
+        return new BookDtoWithoutCategoryIds(
+                ID_SECOND,
+                "Crime and Punishment",
+                "Fyodor Dostoevsky",
+                "9780143058144",
+                BigDecimal.valueOf(15.25),
+                "A psychological drama",
+                "/images/crime-punishment.jpg"
+        );
+    }
+
     public static PageRequest getDefaultPageRequest() {
         return PageRequest.of(0, 10);
     }

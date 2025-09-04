@@ -38,10 +38,12 @@ import project.bookstore.util.ControllerRepositoryTestUtil;
 class CategoryControllerTest {
     protected static MockMvc mockMvc;
     private static BookDtoWithoutCategoryIds gatsbyWithoutCategoryIdsExpected;
+    private static BookDtoWithoutCategoryIds crimeWithoutCategoryIdsExpected;
     private static CreateCategoryRequestDto createTestCategoryRequest;
     private static CategoryDto testCategoryDtoExpected;
     private static CategoryDto updatedFictionCategoryDtoExpected;
     private static CategoryDto fictionCategoryDtoExpected;
+    private static CategoryDto comedyCategoryDtoExpected;
     private static UpdateCategoryRequestDto emptyUpdateCategoryRequest;
     private static UpdateCategoryRequestDto updateFictionCategoryRequest;
     @Autowired
@@ -59,6 +61,8 @@ class CategoryControllerTest {
                 ControllerRepositoryTestUtil.getTestCategoryDtoExpected();
         fictionCategoryDtoExpected =
                 ControllerRepositoryTestUtil.getFictionCategoryDtoExpected();
+        comedyCategoryDtoExpected =
+                ControllerRepositoryTestUtil.getComedyCategoryDtoExpected();
         updateFictionCategoryRequest =
                 ControllerRepositoryTestUtil.getUpdateFictionCategoryRequest();
         updatedFictionCategoryDtoExpected =
@@ -67,6 +71,8 @@ class CategoryControllerTest {
                 ControllerRepositoryTestUtil.getEmptyUpdateCategoryRequest();
         gatsbyWithoutCategoryIdsExpected =
                 ControllerRepositoryTestUtil.getGatsbyWithoutCategoryIdsExpected();
+        crimeWithoutCategoryIdsExpected =
+                ControllerRepositoryTestUtil.getCrimeWithoutCategoryIdsExpected();
     }
 
     @Test
@@ -105,12 +111,10 @@ class CategoryControllerTest {
         assertEquals(2, content.size());
 
         CategoryDto fictionActual = objectMapper.treeToValue(content.get(0), CategoryDto.class);
-        System.out.println(fictionActual.id());
-        System.out.println(fictionActual.name());
         assertEquals(fictionCategoryDtoExpected, fictionActual);
 
         CategoryDto comedyActual = objectMapper.treeToValue(content.get(1), CategoryDto.class);
-        assertEquals(fictionCategoryDtoExpected, comedyActual);
+        assertEquals(comedyCategoryDtoExpected, comedyActual);
     }
 
     @WithMockUser(username = "user", roles = {"USER"})
@@ -213,6 +217,6 @@ class CategoryControllerTest {
         BookDtoWithoutCategoryIds crimeActualBookDto = objectMapper.treeToValue(
                 content.get(1), BookDtoWithoutCategoryIds.class
         );
-        assertEquals(gatsbyWithoutCategoryIdsExpected, crimeActualBookDto);
+        assertEquals(crimeWithoutCategoryIdsExpected, crimeActualBookDto);
     }
 }
