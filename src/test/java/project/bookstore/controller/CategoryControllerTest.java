@@ -38,7 +38,8 @@ import project.bookstore.util.ControllerRepositoryTestUtil;
 class CategoryControllerTest {
     protected static MockMvc mockMvc;
     private static BookDtoWithoutCategoryIds gatsbyWithoutCategoryIdsExpected;
-    private static CreateCategoryRequestDto createFictionCategoryRequest;
+    private static CreateCategoryRequestDto createTestCategoryRequest;
+    private static CategoryDto testCategoryDtoExpected;
     private static CategoryDto updatedFictionCategoryDtoExpected;
     private static CategoryDto fictionCategoryDtoExpected;
     private static UpdateCategoryRequestDto emptyUpdateCategoryRequest;
@@ -52,8 +53,10 @@ class CategoryControllerTest {
                 .webAppContextSetup(applicationContext)
                 .apply(springSecurity())
                 .build();
-        createFictionCategoryRequest =
-                ControllerRepositoryTestUtil.getCreateFictionCategoryRequest();
+        createTestCategoryRequest =
+                ControllerRepositoryTestUtil.getCreateTestCategoryRequest();
+        testCategoryDtoExpected =
+                ControllerRepositoryTestUtil.getTestCategoryDtoExpected();
         fictionCategoryDtoExpected =
                 ControllerRepositoryTestUtil.getFictionCategoryDtoExpected();
         updateFictionCategoryRequest =
@@ -69,7 +72,7 @@ class CategoryControllerTest {
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void createCategory_validRequest_returnsCategoryDto() throws Exception {
-        String jsonRequest = objectMapper.writeValueAsString(createFictionCategoryRequest);
+        String jsonRequest = objectMapper.writeValueAsString(createTestCategoryRequest);
 
         MvcResult result = mockMvc.perform(post("/categories")
                         .content(jsonRequest)
@@ -83,7 +86,7 @@ class CategoryControllerTest {
         );
 
         assertNotNull(actual);
-        assertEquals(fictionCategoryDtoExpected, actual);
+        assertEquals(testCategoryDtoExpected, actual);
     }
 
     @WithMockUser(username = "user", roles = {"USER"})

@@ -105,10 +105,18 @@ public class ControllerRepositoryTestUtil {
         );
     }
 
-    public static CreateCategoryRequestDto getCreateFictionCategoryRequest() {
+    public static CreateCategoryRequestDto getCreateTestCategoryRequest() {
         return new CreateCategoryRequestDto(
-                "Fiction",
-                "Fiction Description"
+                "Test category",
+                "Test category Description"
+        );
+    }
+
+    public static CategoryDto getTestCategoryDtoExpected() {
+        return new CategoryDto(
+                3L,
+                "Test category",
+                "Test category Description"
         );
     }
 
