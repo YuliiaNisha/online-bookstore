@@ -15,6 +15,7 @@
 - [Description](#description)
 - [Technologies and Tools](#technologies-and-tools)
 - [Controllers](#controllers)
+- [Model Diagram](#model-diagram)
 - [Postman](#postman)
 - [How to use](#how-to-use)
 - [Challenges and Solutions](#challenges-and-solutions)
@@ -33,10 +34,16 @@ Its strength lies in its simplicity and efficiency: the project is lightweight, 
 
 ## Technologies and Tools
 This project employs:
-- **Spring Boot**, **Spring Data JPA**, and **Spring Security** to simplify development and reduce boilerplate code while maintaining full functionality and security.
-- **MapStruct** for efficient mapping between entities and DTOs.
-- **Swagger** to provide clear and user-friendly API documentation.
-
+- **Java 17** - The core programming language used to build the application.
+- **Spring Boot 3.3.3** - Simplifies configuration, provides embedded server, and auto-configures dependencies.
+- **Spring Data JPA 3.3.3** - Simplifies database access with repository abstraction.
+- **Spring Validation 3.3.3** - Enables bean validation using annotations like @NotNull and @Email.
+- **Spring Security 6.3.3** - Provides authentication, JWT token validation, and role-based authorisation.
+- **MapStruct 1.6.2** - Efficient mapping between entities and DTOs.
+- **Lombok 1.18.34** - Reduces boilerplate by auto-generating getters, setters, and constructors.
+- **Liquibase 4.27.0** - Manages database schema changes and versioning in a structured way.
+- **Springdoc OpenAPI (Swagger UI) 2.1.0** - Provides clear and user-friendly API documentation.
+- **Testcontainers 1.21.3** - Enables running tests inside lightweight Docker containers for reproducible environments.
 ---
 
 ## Controllers
@@ -69,7 +76,11 @@ All endpoints can be divided into three groups:
 |                  |                      | Add Book To Cart |
 |                  |                      | Update Book Quantity in Cart |
 |                  |                      | Delete Book From Cart |
+---
 
+## Model Diagram
+The diagram below represents the entity relationships of the Bookstore:
+![Model Diagram](https://raw.githubusercontent.com/YuliiaNisha/images/1a3b90504fe95c93d5cff937b05292a22142a8e7/bookstoreModelDiagram.png)
 ---
 
 ## Postman
@@ -89,7 +100,6 @@ How to use this Postman collection:
 
 For a quick overview of how to use the Postman collection and test the API endpoints, watch this video:  
 👉 [Postman demo](https://www.loom.com/share/8afbfe7a809e4c9da0bd496bc78d1193?sid=2c4f6647-b0a5-4369-9837-2efef8414830)
-
 ---
 
 ## How to use
@@ -118,7 +128,6 @@ The API is deployed on AWS, making it accessible to anyone around the world. Thi
 1. Open your browser and go to the deployed Swagger UI URL:
    http://ec2-16-171-2-102.eu-north-1.compute.amazonaws.com/api/swagger-ui/index.html
 2. Use Swagger UI to explore all available endpoints, check request and response models, and test the API directly in the browser.
-
 ---
 
 ## Challenges and Solutions
@@ -134,7 +143,6 @@ The API is deployed on AWS, making it accessible to anyone around the world. Thi
 * Default MapStruct mapping methods were insufficient for converting some entities to DTOs and back.
 #### Solution:
 * Implemented custom mapping methods.
-
 ---
 
 ## API Documentation
@@ -153,5 +161,4 @@ It provides a convenient way to:
 ```bash
 http://localhost:8080/api/swagger-ui/index.html
 ```
-
 ---
